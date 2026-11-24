@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import type { pages } from '../../data/site';
 import { SidebarContent } from '../Sidebar/SidebarContent';
 import './Menu.css';
 
@@ -8,6 +9,7 @@ const DESKTOP_QUERY = '(min-width: 992px)';
 type MenuProps = {
   activeHref: string | null;
   onNavigate: (href: string) => void;
+  page?: keyof typeof pages;
 };
 
 /** Three bars (Figma 1:133): the middle one is shorter and grows to full length on hover. */
@@ -30,7 +32,7 @@ function MenuIcon() {
  * the browser traps focus inside it, closes it on Esc, makes the page behind it inert
  * and returns focus to the button on close.
  */
-export function Menu({ activeHref, onNavigate }: MenuProps) {
+export function Menu({ activeHref, onNavigate, page }: MenuProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -94,7 +96,7 @@ export function Menu({ activeHref, onNavigate }: MenuProps) {
           <MenuIcon />
         </button>
         <div className="menu-drawer__panel">
-          <SidebarContent activeHref={activeHref} onNavigate={handleNavigate} navLabel="Menu" />
+          <SidebarContent activeHref={activeHref} onNavigate={handleNavigate} navLabel="Menu" page={page} />
         </div>
       </dialog>
     </>

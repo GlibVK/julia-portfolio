@@ -30,6 +30,7 @@ Four 1920x1024 screens of one scrolling page. All screens share a fixed left sid
 | 05 | Works: portfolio (done) | `1:183` | `images/figma/05-works/` | The demo's "Portfolio": header + scroll-snap row of project cards; cards and the sidebar Projects items share one `projects` list (see Section 05 notes) |
 | 06 | About / Biodata (done) | `1:2` | none | The demo's "BIODATA" section placed above Experience as `about`: Education, Experiences, Interests, References in a 2x2 grid (see Section 06 notes) |
 | 06b | Contact (done) | none (demo only) | none | The demo's "Contact Me": intro, FAQ accordion, mailto form; nav item "Contact" (see Contact section notes) |
+| 06c | Portfolio page (done) | none (demo `portfolio-masonry.html`) | `images/portfolio/` | Separate page `/portfolio/` with every project, category filters and a grid; opened by "View All", "View all works" and the sidebar "Portfolio" label (see Portfolio page notes) |
 | 07 | Responsive | all | none | Tablet and mobile layouts: sidebar becomes a burger menu, columns stack, large type scales down |
 | 08 | Final QA | all | none | Compare with Figma at 1920 / 1440 / 768 / 375 px, accessibility, performance, link check |
 
@@ -47,7 +48,7 @@ Decisions approved by the user:
 
 - **Stack:** Vite 8 + React 19 + TypeScript 6, plain CSS with custom properties (no CSS framework). The app lives in `site/`.
 - **Git:** repository at `julia-free/` root. `node_modules`, `site/dist` and the `.fig` file are ignored. Commit only after the user approves.
-- **Old TemplatesJungle files** (`index.html`, `style.css`, `css/`, `js/`, old images in `images/`) stay where they are as reference. They are not used by the new site.
+- **Old TemplatesJungle files** (`index.html`, `style.css`, `css/`, `js/`, `readme.txt`, old images): moved on 2026-11-24 to `template-reference/` (git-ignored, local only) before the repository went public, because the template licence forbids redistributing it as is. They are not used by the new site.
 - **License credit:** keep a small "Design by TemplatesJungle" link to https://templatesjungle.com/ (add it in section 01, bottom of the sidebar).
 
 ### Structure
@@ -191,7 +192,7 @@ Measured on the demo at 393x852, 375x667 and 768x1024 and copied; our page now m
 ## Section 05 notes (done: Works = the demo's "Portfolio")
 
 **User decisions 2026-11-24:** Works and the sidebar "Projects" are the same thing, so both come from ONE list, `projects` in `site.ts` (`slug`, `title`, `format`, `image`, `background`, `art`, `href`). `projectsGroup` (the sidebar submenu) is built from it. Project names from the demo (Nostalgia portrait, Workoholic city design, Zoo keeper envelope). The sidebar group was renamed "Projects" → **"Portfolio"** (user, same day).
-- **"View All"** (added at the user's request, placeholder `#works` in `worksIntro.button`): demo btn-dark 154.4x73.6, 16px regular, not uppercase, 16px under the text (desktop x 1178.5, y 161).
+- **"View All"** (added at the user's request; opens `/portfolio/` since the portfolio page exists, `worksIntro.button`): demo btn-dark 154.4x73.6, 16px regular, not uppercase, 16px under the text (desktop x 1178.5, y 161).
 
 - **Links:** each card is `<li id="project-<slug>">` with a link to `project.href`, which is `#project-<slug>` for now. A sidebar "Projects" item jumps to the card: the browser scrolls the page and the card row (fragment navigation scrolls every scroll container), `scroll-margin-top: 25vh` keeps it below the screen top, and `:target` flashes a dark ring once. **Later:** set `href` to the project page (e.g. `/projects/<slug>`) and both the card and the menu item open it; separate pages need routing (not built).
 - Component `Works`, hook `useCarousel` (scroll positions = cards that can start the view, like Swiper's bullets; measured in effects only, so SSR markup has no controls).
@@ -227,6 +228,26 @@ Measured on the demo at 393x852, 375x667 and 768x1024 and copied; our page now m
 - The "Experienced Creative mind" component was renamed `AboutIntro` → `ExperienceIntro` (classes `intro__*`, data `experienceIntro`); it now lives in `Section id="experience"`.
 - Checked: active nav item = the section in view (Home, About, Experience, Works); no overlaps or horizontal scroll at 2000, 1300, 992 and 375px; no console errors; `npm run build` passes.
 
+## Portfolio page notes (done, user request 2026-11-24)
+
+The demo's `portfolio-masonry.html` (a PRO page of the template; its pictures are the free template's `images/portfolio-thumbnail-*.jpg`) rebuilt as a second page, **`/portfolio/`**. Opened by the Works "View All" button, the home "View all works" button and the sidebar **"Portfolio" label** (user: the label opens the page, the chevron next to it still shows the project items; later the items and cards will open project pages).
+
+- **Pages (multi-page build, no router):** `site/index.html` + `src/main.tsx` (home, `App`) and `site/portfolio/index.html` + `src/portfolio.tsx` (`pages/PortfolioPage`); both start through `src/mount.tsx`. `vite.config.ts` lists both HTML files in `build.rolldownOptions.input`; `entry-server.tsx` renders a page by name and `scripts/prerender.mjs` fills both HTML files (with `SITE_URL`: canonical per page, both URLs in `sitemap.xml`). Paths in `pages` (`site.ts`). The dev server serves `/portfolio/` too (with the trailing slash).
+- **One project list:** `projects` in `site.ts` holds every project: `slug`, `title`, `format`, `categories` (filter names from `portfolioCategories`), `featured` (also in the home Works row and the sidebar items), `cover` and, later, `page`. `cover` is `{ kind: 'art' }` (Figma illustration on a colour: the three featured cards) or `{ kind: 'photo', photo: '<name>' }`.
+- **Adding a project:** put the picture in `images/portfolio/source/<name>.jpg|png`, run `npm run images` (writes `images/portfolio/optimized/<name>-{308,615}.{avif,webp,jpg}`, cut to the 615:576 tile), add an entry to `projects`. `data/portfolioPhotos.ts` finds the files with `import.meta.glob` (`?url&no-inline`, so small tiles are not inlined as base64 into the shared JS); the build fails with a clear message if a photo is missing. The nine placeholder photos are the demo thumbnails 4–12 (1–3 are the same drawings as the Figma cards).
+- **Shared card picture:** `components/ProjectCover` (tile 393:368 = 615:576; art, or `<picture>` with AVIF/WebP/JPEG srcsets; hover scale 1.03) is used by the Works row and the grid.
+- **Layout** (demo measured at 2000x978; page px x `--fig-px` like the home sections): label line y 192, header column x 858.5, 592 wide, centred text; heading 80px Bold (1.45em box), text 8px under it with a 16px margin; filters row with 48px padding above and below, 24px gaps, 14.4px uppercase; grid images from x 550.5, 4 per row (3 from 992 to 1199px), 284 wide, 24 apart. Below 992px: 2 tiles per row, 24px apart; phones: label line y 104, 48px edges; from 768px: label y 192, column edge `136 + (width - 760) / 2` (the demo's `p-md-5 m-md-5` inside its container). On phones the filter row may use the side padding (16px from the screen edges, 20px gaps) so all five fit in one row.
+- **Header higher than the demo** (user, 2026-11-24: scrolled to the top, the title sat in the middle of the screen): desktop label line at y 48 (x `--fig-px`), level with the logo; 768–991px at 96 (as the home Works label; the burger is at 12–54px on the right, the centred header does not reach it); phones unchanged (104). Everything below moves up with it.
+- **Filters** (improved over the demo): `<button aria-pressed>` in a labelled group, an extra "All" first (default), the chosen one marked with the nav's black line (grows from the left on hover); a visually hidden `role=status` says how many projects are shown; tiles shown by a filter fade and grow in (400ms, opacity + scale 0.94, like Isotope), off with reduced motion. A link to `#project-<slug>` (sidebar item) shows all projects again and scrolls to the tile (25vh below the top, dark ring flash). Tiles link to `projectHref()`: the project page once `page` is set, for now the tile itself; titles are visually hidden (the demo shows no captions).
+- **Sidebar:** `SidebarContent` and `Menu` take `page`. On the portfolio page the section links become `/#about` etc., the logo `/`, the "Portfolio" label has `aria-current="page"` (black line) and the group starts open. The label is a link across the row; the chevron is a separate 40x43.2 button (`aria-label` "Portfolio projects") over its right end. Rows, line and chevron position unchanged (checked at 2000).
+- Checked against the demo (reveals off): 2000x978 header, filters row, grid and tiles within 0.1px (the filter row is centred with "All" added); 820x1180 tiles 158.4 / 414.4, 232 wide (demo 158.5 / 414.5); 768x1024 column 136, tiles 228.4 (demo 228.5; the demo's second tile is 3.6px further right, an Isotope rounding); 393x852 and 375x667 label 104, grid top 459.4 / 458.1 (demo 459.2 / 458.3). Not copied: on phones the demo's column is 15px narrower on the right (its main column offset); ours keeps the home page's 48px edges, so tiles are ~8px wider. 1300 and 992 scale like the home sections (3 columns at 992). Filters, status text, hash links, drawer, no horizontal scroll, no console errors. Production build (`npm run preview`): both pages hydrate without warnings, tiles load AVIF; shared JS 76.8 KB gzip.
+
+## GitHub and hosting (2026-11-24, user decision)
+
+- Public GitHub repository, site on **GitHub Pages** at `https://<owner>.github.io/<repository>/`, built by `.github/workflows/deploy-pages.yml` on every push to `master` (one-time setting: Settings → Pages → Source "GitHub Actions"). Work goes on feature branches and reaches `master` through pull requests.
+- Sub-path support: `vite.config.ts` `base` = `BASE_PATH` (default `/`); page links use `pages` in `site.ts`, built from `import.meta.env.BASE_URL`; Vite prefixes the HTML, CSS and asset URLs. The workflow sets `BASE_PATH=/<repository>/` and `SITE_URL`. Checked locally with `BASE_PATH=/julia-portfolio/` + `vite preview`: both pages, links, fonts and images load. In Git Bash set `MSYS_NO_PATHCONV=1`, otherwise it rewrites `/julia-portfolio/` into a Windows path.
+- The original template files were moved out of git before publishing (see Foundation).
+
 ## Speed and SEO pass (2026-11-24, user-approved steps 1–5)
 
 Nothing visible or animated was meant to change; checked after the pass (2000x978, 393x852): same positions to the pixel, reveals start hidden and play on load, replay on scroll back, letters, menu open/close, burger bars, smooth wheel; no console errors, no hydration warnings.
@@ -242,5 +263,5 @@ Nothing visible or animated was meant to change; checked after the pass (2000x97
 ## Asset notes
 
 - `images/figma/_unused/` holds a photo that is hidden in every frame of the mockup. It is not part of the visible design.
-- The other files in `images/` (banner, portfolio, thumbnails, logos) belong to the original TemplatesJungle HTML template, not to the mockup. Decided in section 00: keep them in place as reference; the new site does not use them.
+- The original TemplatesJungle HTML template's images (banner, portfolio, thumbnails, logos) are in `template-reference/images/` (local only, see Foundation). Thumbnails 4–12 are copied into `images/portfolio/source/` as placeholder project pictures for the portfolio page.
 - The HTML template license requires keeping the TemplatesJungle credit link unless the paid version is used. Decided in section 00: keep a small credit link (added in section 01).

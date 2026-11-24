@@ -1,8 +1,9 @@
 // One-off image optimisation. Run in site/: `npm run images`.
 // Reads the original mockup assets (never changes them) and writes smaller copies:
 // - the home portrait as AVIF / WebP / PNG at 1x and 2x of its displayed width (423px);
-// - the 1200x630 link-preview image (og-image.jpg) into public/.
-import { mkdir } from 'node:fs/promises';
+// - the 1200x630 link-preview image (og-image.jpg) into public/;
+// - the portfolio photos (images/portfolio/source/) as AVIF / WebP / JPEG tiles.
+import { mkdir, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
@@ -44,4 +45,33 @@ await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#fff
   .jpeg({ quality: 82, mozjpeg: true })
   .toFile(`${publicDir}og-image.jpg`);
 
-console.log('Images written to', outDir, 'and', publicDir);
+// Portfolio photos: every file in images/portfolio/source/ (add a project = drop its picture
+// there, run `npm run images`, add an entry with `photo: '<file name without extension>'` to
+// `projects` in src/data/site.ts). Tiles are at most ~300 CSS px wide, so 1x and 2x widths;
+// the picture is cut to the demo's 615:576 tile shape.
+const portfolioSrcDir = here('../../images/portfolio/source/');
+const portfolioOutDir = here('../../images/portfolio/optimized/');
+const TILE_WIDTHS = [308, 615];
+const TILE_RATIO = 576 / 615;
+
+await mkdir(portfolioOutDir, { recursive: true });
+const photos = (await readdir(portfolioSrcDir)).filter((file) => /\.(jpe?g|png|webp|avif)$/i.test(file));
+
+for (const file of photos) {
+  const name = file.replace(/\.[^.]+$/, '');
+  for (const width of TILE_WIDTHS) {
+    const base = sharp(`${portfolioSrcDir}${file}`).resize({
+      width,
+      height: Math.round(width * TILE_RATIO),
+      fit: 'cover',
+    });
+    const out = `${portfolioOutDir}${name}-${width}`;
+    await Promise.all([
+      base.clone().avif({ quality: 60, effort: 6 }).toFile(`${out}.avif`),
+      base.clone().webp({ quality: 82, effort: 6 }).toFile(`${out}.webp`),
+      base.clone().jpeg({ quality: 82, mozjpeg: true }).toFile(`${out}.jpg`),
+    ]);
+  }
+}
+
+console.log('Images written to', outDir, publicDir, `and ${portfolioOutDir} (${photos.length} portfolio photos)`);

@@ -90,30 +90,7 @@
   display: block;
 }
 
-/* Card picture: Figma background colour + the illustration at its Figma place in the 393x368 card */
-.works__image {
-  position: relative;
-  display: block;
-  aspect-ratio: 393 / 368;
-  overflow: hidden;
-  background: var(--card-bg);
-}
-
-.works__image img {
-  position: absolute;
-  left: calc(var(--art-left) / 393 * 100%);
-  top: calc(var(--art-top) / 368 * 100%);
-  width: calc(var(--art-width) / 393 * 100%);
-  max-width: none;
-  transition: transform 400ms var(--ease-out);
-}
-
-/* Light hover (interaction spec section 6): the illustration grows a little. */
-@media (hover: hover) {
-  .works__link:hover .works__image img {
-    transform: scale(1.03);
-  }
-}
+/* Card picture and its hover: components/ProjectCover (the same tile as on the portfolio page). */
 
 .works__caption {
   display: flex;

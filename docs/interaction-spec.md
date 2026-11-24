@@ -4,7 +4,7 @@ The Figma mockup shows static desktop screens only. This file describes the beha
 
 ## How this was checked (2026-11-24)
 
-- The demo serves the same `index.html`, `style.css`, `js/script.js`, `js/plugins.js` and `css/vendor.css` as the local template in `julia-free/` (identical apart from line endings). The local files are a reliable source of exact values.
+- The demo serves the same `index.html`, `style.css`, `js/script.js`, `js/plugins.js` and `css/vendor.css` as the local template in `julia-free/template-reference/` (identical apart from line endings; local only, not in git). The local files are a reliable source of exact values.
 - The demo uses jQuery 1.11, Bootstrap 5.3.1 (scrollspy, collapse, accordion), AOS (scroll reveal) and Swiper (slider). **We use none of them**: every effect below is small enough for CSS plus a few React hooks.
 - Measured in the browser at 1920×1024 and 375×812: hover colours, durations, active menu state, reveal behaviour, mobile menu.
 
