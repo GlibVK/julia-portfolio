@@ -27,74 +27,127 @@ export const navItems: NavItem[] = [
 /** Page section ids in scroll order (as in App.tsx), used by the scrollspy. */
 export const sectionIds = navItems.map((item) => item.section);
 
+/** Site pages (one HTML file each, see vite.config.ts). */
+export const pages = {
+  home: '/',
+  portfolio: '/portfolio/',
+} as const;
+
 export type NavGroup = {
   label: string;
+  /** Page the group label opens; the chevron next to it only shows or hides the items. */
+  href?: string;
   items: { label: string; href: string }[];
 };
+
+/** Filter buttons on the portfolio page, in this order (the demo's categories). */
+export const portfolioCategories = ['Fashion', 'Portrait', 'Urban', 'Events'] as const;
+export type PortfolioCategory = (typeof portfolioCategories)[number];
+
+/**
+ * Card picture.
+ * - `art`: an illustration placed on a coloured background (the Figma cards; sharp on any screen).
+ * - `photo`: a picture from images/portfolio/source/, named without its extension. Run
+ *   `npm run images` after adding a file there; it writes the AVIF / WebP / JPEG tiles.
+ */
+export type ProjectCover =
+  | {
+      kind: 'art';
+      image: string;
+      background: string;
+      /** Illustration box inside the 393x368 card, Figma px. */
+      box: { left: number; top: number; width: number };
+    }
+  | { kind: 'photo'; photo: string };
 
 export type Project = {
   /** Short id for anchors and, later, page URLs ("nostalgia-portrait"). */
   slug: string;
   title: string;
-  /** File format tag shown on the card. */
-  format: 'svg' | 'psd' | 'png';
-  /** Card illustration (Figma 1:225, 1:251, 1:281: the demo's portfolio art without background). */
-  image: string;
-  /** Card background (Figma). */
-  background: string;
-  /** Illustration box inside the 393x368 card, Figma px. */
-  art: { left: number; top: number; width: number };
-  /**
-   * Where the card and the sidebar item lead. For now the card itself in the Works section;
-   * change it to the project page (e.g. `/projects/<slug>`) when real projects exist.
-   */
-  href: string;
+  /** File format tag shown on the Works card. */
+  format: 'svg' | 'psd' | 'png' | 'jpg';
+  /** Filters on the portfolio page that show this project. */
+  categories: PortfolioCategory[];
+  /** Also shown in the home Works row and in the sidebar "Portfolio" items. */
+  featured?: boolean;
+  cover: ProjectCover;
+  /** The project's own page, once it exists (e.g. `/portfolio/<slug>/`). */
+  page?: string;
 };
 
 /**
- * Portfolio projects: ONE list for the Works cards and the sidebar "Portfolio" items
- * (user decision 2026-11-24). Placeholders from the demo; replace with real projects later.
+ * All portfolio projects: ONE list for the portfolio page (every project), the home Works row
+ * and the sidebar "Portfolio" items (the `featured` ones). To add a project, add an entry here.
+ * Placeholders from the demo; replace with real projects later.
  */
 export const projects: Project[] = [
   {
     slug: 'nostalgia-portrait',
     title: 'Nostalgia portrait',
     format: 'svg',
-    image: nostalgiaPortraitArt,
-    background: '#eff7f8',
-    art: { left: 106, top: 78, width: 206.341 },
-    href: '#project-nostalgia-portrait',
+    categories: ['Fashion', 'Urban'],
+    featured: true,
+    cover: {
+      kind: 'art',
+      image: nostalgiaPortraitArt,
+      background: '#eff7f8',
+      box: { left: 106, top: 78, width: 206.341 },
+    },
   },
   {
     slug: 'workoholic-city',
     title: 'Workoholic city design',
     format: 'svg',
-    image: workoholicCityArt,
-    background: '#f6e0e0',
-    art: { left: 83, top: 91, width: 252.334 },
-    href: '#project-workoholic-city',
+    categories: ['Fashion', 'Portrait', 'Events'],
+    featured: true,
+    cover: {
+      kind: 'art',
+      image: workoholicCityArt,
+      background: '#f6e0e0',
+      box: { left: 83, top: 91, width: 252.334 },
+    },
   },
   {
     slug: 'zoo-keeper-envelope',
     title: 'Zoo keeper envelope',
     format: 'psd',
-    image: zooKeeperEnvelopeArt,
-    background: '#f4ecfe',
-    art: { left: 77, top: 97, width: 220.638 },
-    href: '#project-zoo-keeper-envelope',
+    categories: ['Portrait', 'Fashion'],
+    featured: true,
+    cover: {
+      kind: 'art',
+      image: zooKeeperEnvelopeArt,
+      background: '#f4ecfe',
+      box: { left: 77, top: 97, width: 220.638 },
+    },
   },
+  { slug: 'friends-in-blue', title: 'Friends in blue', format: 'jpg', categories: ['Fashion'], cover: { kind: 'photo', photo: 'friends-in-blue' } },
+  { slug: 'bearded-designer', title: 'Bearded designer', format: 'jpg', categories: ['Urban', 'Events'], cover: { kind: 'photo', photo: 'bearded-designer' } },
+  { slug: 'gear-skater', title: 'Gear skater', format: 'jpg', categories: ['Urban'], cover: { kind: 'photo', photo: 'gear-skater' } },
+  { slug: 'idea-rollerblader', title: 'Idea rollerblader', format: 'jpg', categories: ['Urban', 'Portrait'], cover: { kind: 'photo', photo: 'idea-rollerblader' } },
+  { slug: 'security-lock', title: 'Security lock', format: 'jpg', categories: ['Portrait', 'Events'], cover: { kind: 'photo', photo: 'security-lock' } },
+  { slug: 'graffiti-board', title: 'Graffiti board', format: 'jpg', categories: ['Events', 'Urban', 'Fashion'], cover: { kind: 'photo', photo: 'graffiti-board' } },
+  { slug: 'speech-bubbles', title: 'Speech bubbles', format: 'jpg', categories: ['Events', 'Portrait', 'Fashion'], cover: { kind: 'photo', photo: 'speech-bubbles' } },
+  { slug: 'basketball-dunk', title: 'Basketball dunk', format: 'jpg', categories: ['Fashion'], cover: { kind: 'photo', photo: 'basketball-dunk' } },
+  { slug: 'office-meeting', title: 'Office meeting', format: 'jpg', categories: ['Portrait', 'Events'], cover: { kind: 'photo', photo: 'office-meeting' } },
 ];
 
-/** Id of a project's card in the Works section (the target of `#project-<slug>`). */
+/** Projects shown on the home page and in the sidebar. */
+export const featuredProjects = projects.filter((project) => project.featured);
+
+/** Id of a project's card (Works row on the home page, grid tile on the portfolio page). */
 export const projectCardId = (slug: string) => `project-${slug}`;
 
+/** Where a card leads: the project page once it exists, otherwise the card itself. */
+export const projectHref = (project: Project) => project.page ?? `#${projectCardId(project.slug)}`;
+
 /**
- * Collapsible "Portfolio" item at the end of the nav (was "Projects", renamed by the user
- * 2026-11-24): the same projects as the Works cards.
+ * "Portfolio" item at the end of the nav (user, 2026-11-24): the label opens the portfolio
+ * page, the chevron shows the featured projects.
  */
 export const projectsGroup: NavGroup = {
   label: 'Portfolio',
-  items: projects.map((project) => ({ label: project.title, href: project.href })),
+  href: pages.portfolio,
+  items: featuredProjects.map((project) => ({ label: project.title, href: projectHref(project) })),
 };
 
 /** Works section header (demo "Portfolio"). */
@@ -102,8 +155,15 @@ export const worksIntro = {
   eyebrow: 'Some of my recent works',
   heading: 'Portfolio',
   text: 'Labore accusam in modo compungi, iacentem substantiales um se sed esse haec.',
-  /** Placeholder: points to the cards until a page with all projects exists. */
-  button: { label: 'View All', href: '#works' },
+  button: { label: 'View All', href: pages.portfolio },
+};
+
+/** Portfolio page header (the demo's portfolio-masonry.html). */
+export const portfolioIntro = {
+  eyebrow: 'Recent Works',
+  heading: 'Portfolio',
+  text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit commodi hic facere excepturi amet velit nobis, optio dolore at distinctio molestias tempore error est animi vel culpa!',
+  allLabel: 'All',
 };
 
 export const contactEmail = 'contact@yoursite.com';
@@ -218,8 +278,8 @@ export const skills: Skill[] = [
   { name: 'Photography', value: 95 },
 ];
 
-/** "View all works" button. Placeholder: points to the Works section until a projects page exists. */
-export const allWorksLink = { label: 'View all works', href: '#works' };
+/** "View all works" button: opens the portfolio page. */
+export const allWorksLink = { label: 'View all works', href: pages.portfolio };
 
 export type SocialIcon = 'facebook' | 'twitter' | 'youtube' | 'pinterest' | 'instagram';
 export type SocialLink = { name: string; href: string; icon: SocialIcon };

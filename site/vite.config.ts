@@ -6,10 +6,21 @@ import react from '@vitejs/plugin-react';
 // The alias lets components import them as '@figma/01-sidebar/julia-logo.svg'.
 const figmaAssets = fileURLToPath(new URL('../images/figma', import.meta.url));
 
+// One HTML file per page (multi-page build): / and /portfolio/.
+const page = (path: string) => fileURLToPath(new URL(path, import.meta.url));
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: { '@figma': figmaAssets },
+  },
+  build: {
+    rolldownOptions: {
+      input: {
+        main: page('./index.html'),
+        portfolio: page('./portfolio/index.html'),
+      },
+    },
   },
   server: {
     port: 5173,

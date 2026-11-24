@@ -52,12 +52,12 @@
   clip-path: inset(0 100% 0 0);
 }
 
-.nav__link[aria-current='true']::before,
+.nav__link[aria-current]::before,
 .nav__link:focus-visible::before {
   clip-path: inset(0 0 0 100%);
 }
 
-.nav__link[aria-current='true']::after,
+.nav__link[aria-current]::after,
 .nav__link:focus-visible::after {
   clip-path: inset(0 0 0 0);
 }
@@ -72,7 +72,7 @@
   }
 }
 
-/* ---------- Projects toggle ---------- */
+/* ---------- Portfolio group (label link + chevron toggle) ---------- */
 .nav__chevron {
   flex: none;
   margin-inline-end: 4px; /* centre under the 24px arrow column */
@@ -80,6 +80,36 @@
   transition:
     transform var(--duration-toggle) ease,
     color var(--duration-toggle) ease;
+}
+
+/*
+ * Portfolio row (user, 2026-11-24): the label is a link to the portfolio page across the whole
+ * row; the chevron is its own button on top of the row's right end and only opens the items.
+ */
+.nav__split {
+  position: relative;
+  width: var(--sidebar-content-width);
+}
+
+.nav__split-link {
+  padding-inline-end: 40px; /* keep the label clear of the chevron button */
+}
+
+.nav__split-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 40px;
+  height: 43.2px; /* the row without its underline */
+}
+
+@media (hover: hover) {
+  .nav__split-toggle:hover .nav__chevron {
+    color: var(--color-ink);
+  }
 }
 
 .nav__toggle[aria-expanded='true'] .nav__chevron {

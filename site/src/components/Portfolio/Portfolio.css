@@ -1,0 +1,203 @@
+/*
+ * Portfolio page = the demo's portfolio-masonry.html, measured at 2000x978 (page px; our
+ * content column starts at x 400, CSS left = page x - 400) and x --fig-px below that, like the
+ * home sections. Demo: header column x 858.5, 592 wide (col-lg-6, centred over the grid), label
+ * line from y 192; heading 80px Bold (1.45em box); text 8px lower with a 16px margin under it;
+ * filters row 48px padding above and below; grid images from x 550.5, 4 per row (3 from 992 to
+ * 1199px), 284 wide, 24 apart (Bootstrap gutters), tiles 615:576.
+ */
+.portfolio {
+  --portfolio-text: max(0.75rem, calc(14.4 * var(--fig-px)));
+  --portfolio-gap: calc(24 * var(--fig-px));
+  width: calc((550.5 - 400 + 1208) * var(--fig-px));
+  min-height: 100svh;
+  /* demo: label line at 192; ours at 48, level with the logo (user, 2026-11-24: title at the top) */
+  padding-top: calc(48 * var(--fig-px));
+  padding-left: calc((550.5 - 400) * var(--fig-px));
+  padding-bottom: calc(96 * var(--fig-px));
+}
+
+/* ---------- Header ---------- */
+.portfolio__header {
+  width: calc(592 * var(--fig-px));
+  margin-inline: auto;
+  font-size: var(--portfolio-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text-body-demo);
+  text-align: center;
+}
+
+.portfolio__eyebrow {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* Demo .display-1: inline-block letter words -> 1.45em line, 1.2em words (as the home "Portfolio") */
+.portfolio__heading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(80 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.45;
+}
+
+.portfolio__heading .split-text__word {
+  line-height: 1.2;
+}
+
+.portfolio__text {
+  margin-bottom: calc(16 * var(--fig-px));
+}
+
+/* ---------- Filters ---------- */
+.portfolio__filters {
+  padding-block: calc(48 * var(--fig-px));
+}
+
+.portfolio__filter-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--portfolio-gap);
+}
+
+/* Demo: 14.4px uppercase links, #111. Ours mark the chosen one with the nav's black line,
+   which also grows from the left on hover (the demo shows no state). */
+.portfolio__filter {
+  position: relative;
+  font-size: var(--portfolio-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
+  text-transform: uppercase;
+}
+
+.portfolio__filter::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: var(--line-accent);
+  border-radius: var(--line-accent);
+  background: var(--color-ink);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--duration-underline) var(--ease-underline);
+}
+
+.portfolio__filter[aria-pressed='true']::after,
+.portfolio__filter:focus-visible::after {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (hover: hover) {
+  .portfolio__filter:hover::after {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Grid ---------- */
+.portfolio__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--portfolio-gap);
+}
+
+.portfolio__tile {
+  /* a sidebar project link scrolls the tile into view below the screen top */
+  scroll-margin-top: 25vh;
+}
+
+.portfolio__link {
+  display: block;
+}
+
+/* Tiles that a filter shows fade and grow in, as the demo's Isotope (opacity + scale). */
+@media (prefers-reduced-motion: no-preference) {
+  .portfolio__tile {
+    animation: portfolio-tile-in 400ms var(--ease-out) both;
+  }
+
+  .portfolio__tile:target .project-cover {
+    animation: portfolio-target 1.6s var(--ease-out);
+  }
+}
+
+@keyframes portfolio-tile-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+/* The tile a sidebar project link points to flashes a dark ring once (as on the home page). */
+@keyframes portfolio-target {
+  0%,
+  40% {
+    box-shadow: inset 0 0 0 3px var(--color-ink);
+  }
+
+  100% {
+    box-shadow: inset 0 0 0 3px transparent;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .portfolio__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/*
+ * Below 992px: the demo's stacked page (measured at 820, 768, 393 and 375px): the header spans
+ * the column, 2 tiles per row 24px apart. Phones: label line from y 104 and the column's 48px
+ * edge; from 768px the demo adds p-md-5 m-md-5: label from 192, column edge 136px at 768 and
+ * centred under a 760px cap above that (136 + (width - 760) / 2; 158.5 at 820).
+ */
+@media (max-width: 991.98px) {
+  .portfolio {
+    --portfolio-text: var(--font-size-eyebrow-demo);
+    --portfolio-gap: 24px;
+    --portfolio-inline: var(--hero-mobile-inline);
+    width: auto;
+    min-height: 100svh;
+    padding: 104px var(--portfolio-inline) 48px;
+  }
+
+  .portfolio__header {
+    width: auto;
+  }
+
+  .portfolio__heading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.625rem + 4.5vw); /* demo .display-1 */
+    line-height: 1.465;
+  }
+
+  .portfolio__text {
+    margin-bottom: var(--space-3);
+  }
+
+  .portfolio__filters {
+    padding-block: 48px;
+  }
+
+  .portfolio__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .portfolio {
+    --portfolio-inline: calc(136px + max(0px, (100% - 760px) / 2));
+    /* demo 192; ours 96 (user: higher on iPads), as the home Works label, clear of the burger (12-54px) */
+    padding-top: 96px;
+  }
+}
+
+/* Phones: five filters need a little more than the 48px-padded column; as in the demo, the row
+   may run into the side padding (16px from the screen edges), with 20px gaps. */
+@media (max-width: 575.98px) {
+  .portfolio__filter-list {
+    margin-inline: -32px;
+    column-gap: 20px;
+  }
+}
