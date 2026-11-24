@@ -22,7 +22,11 @@ function MenuIcon() {
 }
 
 /**
- * Top-right menu button + drawer. The drawer is a native <dialog> opened with showModal():
+ * Top-right menu button + drawer (below 992px). The panel slides in from the left, and the
+ * button seems to turn into an X: the dialog has its own close button at the same spot,
+ * whose bars morph from the burger shape on open and back on close.
+ *
+ * The drawer is a native <dialog> opened with showModal():
  * the browser traps focus inside it, closes it on Esc, makes the page behind it inert
  * and returns focus to the button on close.
  */
@@ -48,16 +52,10 @@ export function Menu({ activeHref, onNavigate }: MenuProps) {
     return () => query.removeEventListener('change', handleChange);
   }, []);
 
-  // A click on the backdrop reaches the <dialog> itself, outside its box.
+  // The dialog covers the whole viewport and the panel is its child, so a click that lands
+  // on the dialog itself is a click on the empty area next to the panel.
   const handleDialogClick = (event: MouseEvent<HTMLDialogElement>) => {
-    if (event.target !== event.currentTarget) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    const inside =
-      event.clientX >= box.left &&
-      event.clientX <= box.right &&
-      event.clientY >= box.top &&
-      event.clientY <= box.bottom;
-    if (!inside) closeMenu();
+    if (event.target === event.currentTarget) closeMenu();
   };
 
   const handleNavigate = (href: string) => {
@@ -95,7 +93,9 @@ export function Menu({ activeHref, onNavigate }: MenuProps) {
         >
           <MenuIcon />
         </button>
-        <SidebarContent activeHref={activeHref} onNavigate={handleNavigate} navLabel="Menu" />
+        <div className="menu-drawer__panel">
+          <SidebarContent activeHref={activeHref} onNavigate={handleNavigate} navLabel="Menu" />
+        </div>
       </dialog>
     </>
   );

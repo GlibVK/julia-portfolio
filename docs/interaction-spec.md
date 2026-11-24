@@ -50,7 +50,7 @@ Demo values (**Copy**):
 - Burger: `position: fixed; top: 40px; right: 40px` (20px + 20px margin), 26×26px, three 2px bars 8px apart, `transition-duration: 0.25s`.
 - Open state turns it into an X: the middle bar rotates 45°, the top bar goes to `top: 0; rotate(0)`, the bottom bar goes to `top: 0; rotate(90deg)`.
 - The sidebar becomes a drawer: `width: 280px`, `transform: translate3d(-100%,0,0) → 0`, `transition: transform 0.3s ease-out`, white background, above the page.
-- **Built (section 01):** our drawer slides in from the **right**, because the menu button is in the top-right corner (Figma). Width `min(400px, 100vw)`, same content and layout as the sidebar.
+- **Built (section 01, revised by user feedback):** as in the demo, the panel slides in from the **left** over the page with no dimming; the top-right burger morphs into an X and back. Width `min(300px, 100vw - 68px)` with a 32px inset on phones, 360px with the 63px desktop inset from 576px. Click outside the panel or Esc closes it.
 
 Demo bugs (**Improve**):
 - The menu does not close after tapping a link, on Esc, or on a tap outside. Close it in all three cases.

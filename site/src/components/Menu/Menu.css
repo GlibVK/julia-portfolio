@@ -70,16 +70,38 @@
   width: 16px;
 }
 
-/* Close button: the bars form an X. @starting-style makes them morph from the burger shape. */
-.menu-button--close .menu-icon__bar--top {
-  transform: translateY(var(--menu-bar-step)) rotate(45deg);
-}
-
-.menu-button--close .menu-icon__bar--middle {
+/*
+ * The page button hides its icon while the drawer is open (the close button sits on top of it),
+ * and shows it again only after the X has morphed back into the burger, so the two never overlap.
+ * Opacity, not visibility: the dialog returns focus to this button when it closes.
+ */
+.menu-button[aria-expanded='true'] .menu-icon {
   opacity: 0;
 }
 
-.menu-button--close .menu-icon__bar--bottom {
+.menu-button:not(.menu-button--close) .menu-icon {
+  transition: opacity 0s linear var(--duration-icon);
+}
+
+.menu-button[aria-expanded='true'] .menu-icon {
+  transition: none;
+}
+
+/*
+ * Close button: the bars form an X while the drawer is open. @starting-style morphs them from
+ * the burger on open; on close [open] goes away and they morph back while the dialog is still
+ * shown (its display/overlay transitions last --duration-icon).
+ */
+.menu-drawer[open] .menu-button--close .menu-icon__bar--top {
+  transform: translateY(var(--menu-bar-step)) rotate(45deg);
+}
+
+.menu-drawer[open] .menu-button--close .menu-icon__bar--middle {
+  width: 16px;
+  opacity: 0;
+}
+
+.menu-drawer[open] .menu-button--close .menu-icon__bar--bottom {
   transform: translateY(calc(-1 * var(--menu-bar-step))) rotate(-45deg);
 }
 
@@ -88,61 +110,73 @@
     opacity: 1;
     transform: none;
   }
+
+  .menu-drawer[open] .menu-button--close .menu-icon__bar--middle {
+    width: 10px;
+  }
 }
 
 /* ---------- Drawer ---------- */
+/*
+ * As in the demo: the panel slides in from the left over the page, with no dimming.
+ * The <dialog> is a transparent layer over the whole viewport (a click on it closes the menu);
+ * the panel inside it moves, so the close button stays put in the top-right corner.
+ */
 .menu-drawer {
+  --drawer-width: min(300px, 100vw - 68px); /* phones: leave room for the X button */
+  --drawer-inset-x: 32px;
   position: fixed;
-  inset: 0 0 0 auto;
-  width: min(var(--sidebar-width), 100vw);
+  inset: 0;
+  width: 100%;
   max-width: none;
   height: 100dvh;
   max-height: none;
   margin: 0;
-  padding: var(--sidebar-inset-top) 0 0 var(--sidebar-inset-x);
+  padding: 0;
   border: 0;
-  overflow-y: auto;
-  background: var(--color-bg);
+  overflow: hidden;
+  background: transparent;
   color: var(--color-text);
-  box-shadow: -8px 0 32px rgb(0 0 0 / 0.08);
-  transform: translateX(100%);
-  /* closing */
+  /* closing: keep the dialog shown until the panel and the X have finished */
   transition:
-    transform var(--duration-drawer-close) ease-in,
-    overlay var(--duration-drawer-close) allow-discrete,
-    display var(--duration-drawer-close) allow-discrete;
+    overlay var(--duration-icon) allow-discrete,
+    display var(--duration-icon) allow-discrete;
 }
 
-.menu-drawer[open] {
-  transform: translateX(0);
-  /* opening */
-  transition:
-    transform var(--duration-drawer-open) var(--ease-drawer),
-    overlay var(--duration-drawer-open) allow-discrete,
-    display var(--duration-drawer-open) allow-discrete;
-}
-
-@starting-style {
-  .menu-drawer[open] {
-    transform: translateX(100%);
+/* Tablets: the same 63px left inset as the desktop sidebar. */
+@media (min-width: 576px) {
+  .menu-drawer {
+    --drawer-width: 360px;
+    --drawer-inset-x: var(--sidebar-inset-x);
   }
 }
 
 .menu-drawer::backdrop {
-  background: rgb(0 0 0 / 0);
-  transition:
-    background-color var(--duration-drawer-open) ease,
-    overlay var(--duration-drawer-open) allow-discrete,
-    display var(--duration-drawer-open) allow-discrete;
+  background: transparent;
 }
 
-.menu-drawer[open]::backdrop {
-  background: var(--color-backdrop);
+.menu-drawer__panel {
+  width: var(--drawer-width);
+  height: 100%;
+  padding: var(--sidebar-inset-top) 0 0 var(--drawer-inset-x);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-bg);
+  box-shadow: 8px 0 32px rgb(0 0 0 / 0.06);
+  transform: translateX(-100%);
+  /* closing */
+  transition: transform var(--duration-drawer-close) ease-in;
+}
+
+.menu-drawer[open] .menu-drawer__panel {
+  transform: translateX(0);
+  /* opening */
+  transition: transform var(--duration-drawer-open) var(--ease-drawer);
 }
 
 @starting-style {
-  .menu-drawer[open]::backdrop {
-    background: rgb(0 0 0 / 0);
+  .menu-drawer[open] .menu-drawer__panel {
+    transform: translateX(-100%);
   }
 }
 
