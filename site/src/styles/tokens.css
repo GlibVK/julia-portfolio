@@ -93,7 +93,14 @@
 
   /* Home hero below 992px (stacked layout) */
   --hero-mobile-top: 48px;      /* demo: section padding above the picture */
-  --hero-mobile-inline: 48px;   /* demo: 36px container + 12px column padding */
+  /*
+   * Side padding of the stacked layout = the demo's Bootstrap column: 48px at the edges
+   * (page 20 + container 20 + inner 8), and from 576px the content is a centred column
+   * (container max-width 540, from 768px 720), as on iPad Air (820px: content x 70.4, 664 wide).
+   * The % resolves where it is used (padding / right of a full-width box).
+   */
+  --container-cap: 100vw;
+  --hero-mobile-inline: calc(48px + max(0px, (100% - 40px - var(--container-cap)) / 2));
   --hero-mobile-bottom: 48px;   /* demo: section padding under the button */
   --hero-mobile-max: 596px;     /* picture box width cap = demo banner image width */
   --button-mobile-width: 217px;  /* demo button */
@@ -126,6 +133,19 @@
   --ease-text: cubic-bezier(0.5, 0, 0.53, 1); /* heading letters (demo value) */
 
   --color-backdrop: rgb(0 0 0 / 0.3);
+}
+
+/* Demo container widths below the desktop layout (Bootstrap sm / md). */
+@media (min-width: 576px) {
+  :root {
+    --container-cap: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --container-cap: 720px;
+  }
 }
 
 /* Below 992px the sidebar is hidden, so the content column is the full viewport width. */

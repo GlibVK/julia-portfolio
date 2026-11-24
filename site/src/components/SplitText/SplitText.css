@@ -21,7 +21,14 @@
     transition-delay: calc(var(--text-delay-base) + var(--letter-index, 0) * var(--text-delay-step));
   }
 
-  .js [data-split-text]:not([data-visible]) .split-text__letter {
+  /*
+   * As in the demo, a heading inside a revealed block plays together with that block
+   * (its letters follow the parent's aos-animate class). Measuring the heading on its own
+   * left it hidden while its block was already shown, e.g. "Contact Me" peeking in under
+   * Works on an iPad (user report 2026-11-24).
+   */
+  .js [data-reveal]:not([data-visible]) [data-split-text] .split-text__letter,
+  .js [data-split-text]:not([data-reveal] *):not([data-visible]) .split-text__letter {
     transform: translate3d(0, 1.2em, 0);
   }
 }

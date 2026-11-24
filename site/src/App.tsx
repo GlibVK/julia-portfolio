@@ -1,4 +1,5 @@
 import { Biodata } from './components/Biodata/Biodata';
+import { Contact } from './components/Contact/Contact';
 import { ExperienceIntro } from './components/ExperienceIntro/ExperienceIntro';
 import { HomeHero } from './components/HomeHero/HomeHero';
 import { Menu } from './components/Menu/Menu';
@@ -6,6 +7,7 @@ import { PageLayout } from './components/PageLayout/PageLayout';
 import { Section } from './components/Section/Section';
 import { SidebarContent } from './components/Sidebar/SidebarContent';
 import { navItems, sectionIds } from './data/site';
+import { Works } from './components/Works/Works';
 import { useActiveNavItem } from './hooks/useActiveNavItem';
 import { useSmoothWheel } from './hooks/useSmoothWheel';
 
@@ -34,8 +36,14 @@ export function App() {
         <Section id="experience" label="Experience" bgNumber={{ value: '03', x: 1325, y: 198 }}>
           <ExperienceIntro />
         </Section>
-        {/* Section 05 (Figma 1:183), not built yet; number still at the Figma place */}
-        <Section id="works" label="Works" bgNumber={{ value: '04', x: 1371, y: 474 }} />
+        {/* Section 05: the demo's "Portfolio" (Figma 1:183); glyph baseline 666 below the top */}
+        <Section id="works" label="Works" bgNumber={{ value: '04', x: 1325, y: 109.7 }}>
+          <Works />
+        </Section>
+        {/* The demo's "Contact Me" (section 05, not in Figma); glyph baseline 645 below the top */}
+        <Section id="contact" label="Contact" bgNumber={{ value: '05', x: 1325, y: 88.9 }}>
+          <Contact />
+        </Section>
       </PageLayout>
       <Menu activeHref={activeHref} onNavigate={onNavigate} />
     </>

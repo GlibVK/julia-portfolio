@@ -126,7 +126,7 @@ Demo (Swiper): 3 cards per view at ≥ 1200px (gap 30px), 2 below (gap 20px at �
 **Decided**: native CSS `scroll-snap` (no library; swipe works on touch, trackpad and Shift+wheel), plus prev/next buttons and dots.
 
 Either way:
-- Bullets/dots use `--color-ink`, not red.
+- Bullets/dots: built as the demo (active #ff534a, others black 20%) after the user made the demo the main reference; see Section 05 notes in layout-plan.md.
 - Cards get a light hover: illustration `transform: scale(1.03)` over 400ms, cursor pointer only if the card links somewhere.
 - Keyboard: the row is focusable (`tabindex="0"`, `role="region"`, `aria-label="Portfolio"`) so arrow keys scroll it.
 
@@ -160,7 +160,7 @@ Either way:
 ## Decisions (approved by the user, 2026-11-24)
 
 1. **Menu button and drawer exist only below 992px** (changed 2026-11-24 after user feedback: on desktop the button opened a second copy of the visible sidebar). From 992px the Figma top-right icon is not shown; `Menu.tsx` closes an open drawer when the window grows past 992px. Icon: bars 2px thick, 7.2px apart (`--menu-bar-step`; 9 screen px at 125% scaling, the smallest crisp step there is 0.8px); the middle bar is its right 10px (as in Figma) and grows to the full 16px on hover by animating `width` (not `clip-path`, which left grey half-pixels); square bar ends.
-2. **Contact section**: not built. The sidebar email covers contact.
+2. **Contact section**: built after all (user, 2026-11-24): the demo's section 05 with a mailto form; see "Contact section notes" in layout-plan.md.
 3. **Scroll reveal** (revised 2026-11-24) **replays as in the demo**: it hides again when the element scrolls back below the trigger line and plays on the next scroll down. Elements that leave through the top stay shown.
 4. **Works slider**: native CSS `scroll-snap`, no Swiper.
 5. **Motion speed** (revised 2026-11-24): reveals copy the demo exactly — 1200ms, 100px, `ease`, trigger 120px above the bottom edge. The earlier 800ms / 40px / `--ease-out` choice was dropped after the user compared the site with the demo. Section 3 above describes the original reasoning.

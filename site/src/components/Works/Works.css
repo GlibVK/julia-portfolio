@@ -1,0 +1,223 @@
+/*
+ * Works section = the live demo's "Portfolio" (user request 2026-11-24), measured at 2000x978
+ * where --fig-px = 1 (page px; CSS left = page x - 400). Desktop values x --fig-px.
+ *
+ * Demo: section padding 48 + header margin 48 -> label line at y 96; heading column x 759.8,
+ * text column x 1178.5 (both 370.7 wide); slider from y 292.5 with 24px padding, cards at
+ * x 550.5, 382.7 wide (3 per view, 30 apart), image 393:368, caption under it; the dots sit
+ * in the slider's bottom padding.
+ */
+.works {
+  width: calc((550.5 - 400 + 1208) * var(--fig-px));
+  padding-top: calc(96 * var(--fig-px));
+  padding-left: calc((550.5 - 400) * var(--fig-px));
+  padding-bottom: calc(48 * var(--fig-px));
+  --works-text: max(0.75rem, calc(14.4 * var(--fig-px)));
+  --works-gap: calc(30 * var(--fig-px));
+}
+
+/* ---------- Header ---------- */
+.works__header {
+  display: grid;
+  grid-template-columns: repeat(2, calc(370.7 * var(--fig-px)));
+  column-gap: calc(48 * var(--fig-px));
+  margin-left: calc((759.8 - 550.5) * var(--fig-px));
+  font-size: var(--works-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text-body-demo);
+}
+
+.works__eyebrow {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* Demo .display-1 "Portfolio": 80px Bold; inline-block letter words -> 1.45em line, 1.2em words */
+.works__heading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(80 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.45;
+}
+
+.works__heading .split-text__word {
+  line-height: 1.2;
+}
+
+/* Demo "View All" (btn-dark px-5 py-4): 154.4x73.6, 16px regular, not uppercase, 16px under the text */
+.works__button {
+  display: flex; /* a block-level box: no inline line box around it */
+  width: calc(154.4 * var(--fig-px));
+  height: calc(73.6 * var(--fig-px));
+  margin-top: calc(16 * var(--fig-px));
+  text-transform: none;
+}
+
+/* ---------- Cards ---------- */
+.works__slider {
+  /* header bottom 244.5 -> slider 292.5, + 24 padding -> cards at 316.5 */
+  margin-top: calc(72 * var(--fig-px));
+}
+
+.works__cards {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 2 * var(--works-gap)) / 3);
+  gap: var(--works-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.works__cards::-webkit-scrollbar {
+  display: none;
+}
+
+.works__cards:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.works__card {
+  scroll-snap-align: start;
+  /* a sidebar "Projects" link scrolls the card into view below the screen top */
+  scroll-margin-top: 25vh;
+}
+
+.works__link {
+  display: block;
+}
+
+/* Card picture: Figma background colour + the illustration at its Figma place in the 393x368 card */
+.works__image {
+  position: relative;
+  display: block;
+  aspect-ratio: 393 / 368;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.works__image img {
+  position: absolute;
+  left: calc(var(--art-left) / 393 * 100%);
+  top: calc(var(--art-top) / 368 * 100%);
+  width: calc(var(--art-width) / 393 * 100%);
+  max-width: none;
+  transition: transform 400ms var(--ease-out);
+}
+
+/* Light hover (interaction spec section 6): the illustration grows a little. */
+@media (hover: hover) {
+  .works__link:hover .works__image img {
+    transform: scale(1.03);
+  }
+}
+
+.works__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--works-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text-body-demo);
+}
+
+.works__format {
+  color: var(--color-text);
+}
+
+/* The card a sidebar "Projects" link points to flashes a dark ring once. */
+@media (prefers-reduced-motion: no-preference) {
+  .works__card:target .works__image {
+    animation: works-target 1.6s var(--ease-out);
+  }
+}
+
+@keyframes works-target {
+  0%,
+  40% {
+    box-shadow: inset 0 0 0 3px var(--color-ink);
+  }
+
+  100% {
+    box-shadow: inset 0 0 0 3px transparent;
+  }
+}
+
+/* ---------- Dots (only when not all cards fit), as the demo's Swiper bullets ---------- */
+/* The bullets start right under the caption, inside the slider's 24px bottom padding. */
+.works__controls {
+  display: flex;
+  justify-content: center;
+  height: 24px;
+}
+
+.works__dots {
+  display: flex;
+  gap: 8px;
+}
+
+/* Demo (Swiper) bullets: 8px, 16px apart, active #ff534a, others black at 20% */
+.works__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-ink);
+  opacity: 0.2;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.works__dot[aria-current='true'] {
+  background: var(--color-skill-fill);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .works__dot:hover {
+    opacity: 0.6;
+  }
+}
+
+/*
+ * Below the desktop breakpoint: the demo's stacked layout (measured at 768x1024 and 393x852),
+ * one column with 48px padding: label at 96, text 48px under the heading, button 16px under
+ * the text, cards 72px lower; 2 cards per view, 20px apart, on tablets and phones (as the demo).
+ */
+@media (max-width: 991.98px) {
+  .works {
+    width: auto;
+    padding: 96px var(--hero-mobile-inline) var(--hero-mobile-bottom);
+    --works-text: var(--font-size-eyebrow-demo);
+    --works-gap: 20px;
+  }
+
+  .works__header {
+    grid-template-columns: 100%;
+    row-gap: 48px;
+    margin-left: 0;
+  }
+
+  .works__heading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.625rem + 4.5vw); /* demo .display-1 */
+    line-height: 1.465;
+  }
+
+  .works__button {
+    width: 154.4px;
+    height: 73.6px;
+    margin-top: var(--space-3);
+    font-size: var(--font-size-body);
+  }
+
+  .works__slider {
+    margin-top: 72px;
+  }
+
+  .works__cards {
+    grid-auto-columns: calc((100% - var(--works-gap)) / 2);
+  }
+}
+

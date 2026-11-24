@@ -151,7 +151,8 @@
  */
 @media (max-width: 991.98px) {
   .intro {
-    padding: var(--hero-mobile-top) var(--hero-mobile-inline) var(--hero-mobile-bottom);
+    /* bottom: the demo's last skill margin 40 + block padding 24 + section padding 48 */
+    padding: var(--hero-mobile-top) var(--hero-mobile-inline) calc(var(--hero-mobile-bottom) + 64px);
     --intro-col: auto;
     --intro-text: var(--font-size-eyebrow-demo);
   }
@@ -163,6 +164,7 @@
   .intro__heading {
     margin-bottom: var(--space-2);
     font-size: calc(1.625rem + 4.5vw); /* demo .display-1 (44px at 393) */
+    line-height: 1.465; /* demo line step at these sizes */
   }
 
   .intro__row {

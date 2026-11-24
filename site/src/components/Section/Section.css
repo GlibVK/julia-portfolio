@@ -9,6 +9,15 @@
   overflow-x: clip;
 }
 
+/*
+ * Last section (Contact): exactly one screen at least, not one Figma frame, and no margin or
+ * extra padding under it, so at the bottom of the page it starts at the top of the screen and
+ * there is no empty scroll below it (user request 2026-11-24).
+ */
+.section:last-child {
+  min-height: 100svh;
+}
+
 /* The background number overflows the frame, as in Figma; this layer cuts it at the section edges. */
 .section__bg {
   position: absolute;
@@ -20,4 +29,20 @@
 .section__content {
   position: relative;
   z-index: 1;
+}
+
+/*
+ * Stacked layout (below 992px) = the demo (user request 2026-11-24, iPad mini): a section is
+ * only as tall as its content, and sections are 48px apart (the demo's collapsed my-5 margins),
+ * so the next section already peeks in, and each background number sits 100px above the end of
+ * its own section instead of at the bottom of a full screen. Desktop keeps one screen per section.
+ */
+@media (max-width: 991.98px) {
+  .section {
+    min-height: 0;
+  }
+
+  .section + .section {
+    margin-top: 48px;
+  }
 }

@@ -1,0 +1,223 @@
+/*
+ * Contact section = the live demo's section "05" (user request 2026-11-24), measured at 2000x978
+ * where --fig-px = 1 (page px; CSS left = page x - 400). Desktop values x --fig-px.
+ *
+ * Demo: section padding 48; intro column x 868.5, 572 wide (label line y 48, heading 72.5,
+ * text 196.5); row at y 284.9 with the FAQ column at x 570.5 (661.3 wide) and the form column
+ * at x 1279.8 (458.7 wide), 48 apart.
+ */
+.contact {
+  padding-top: calc(48 * var(--fig-px));
+  padding-left: calc((570.5 - 400) * var(--fig-px));
+  --contact-text: max(0.75rem, calc(14.4 * var(--fig-px)));
+  font-size: var(--contact-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text-body-demo);
+}
+
+/* ---------- Intro ---------- */
+.contact__intro {
+  width: calc(572 * var(--fig-px));
+  margin-left: calc((868.5 - 570.5) * var(--fig-px));
+}
+
+.contact__eyebrow {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* Demo .display-1: 80px Bold; inline-block letter words -> 1.45em line, 1.2em words */
+.contact__heading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(80 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.45;
+}
+
+.contact__heading .split-text__word {
+  line-height: 1.2;
+}
+
+/* ---------- Row: FAQ and form ---------- */
+.contact__row {
+  display: grid;
+  grid-template-columns: calc(661.3 * var(--fig-px)) calc(458.7 * var(--fig-px));
+  column-gap: calc(48 * var(--fig-px));
+  align-items: start;
+  /* text margin 16 + header row margin 48 */
+  margin-top: calc(64 * var(--fig-px));
+}
+
+/* Demo h3: 28px Bold, line height 1.2, 8px margin */
+.contact__subheading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: max(1rem, calc(28 * var(--fig-px)));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+/* ---------- FAQ (demo Bootstrap accordion, flush) ---------- */
+.faq {
+  /* lets ::details-content animate to its natural height where supported */
+  interpolate-size: allow-keywords;
+}
+
+.faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0; /* as the demo: the chevron sits right after the text, so long questions wrap like there */
+  padding-block: calc(16 * var(--fig-px));
+  border-bottom: 0.8px solid var(--color-divider);
+  color: var(--color-display);
+  font-size: max(0.875rem, calc(19.2 * var(--fig-px)));
+  line-height: 1.2;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq__chevron {
+  flex: none;
+  transition: transform 200ms ease-in-out;
+}
+
+.faq__item[open] .faq__chevron {
+  transform: rotate(180deg);
+}
+
+.faq__answer {
+  padding-block: calc(16 * var(--fig-px));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .faq__item::details-content {
+    height: 0;
+    overflow: clip;
+    transition:
+      height 350ms ease,
+      content-visibility 350ms allow-discrete;
+  }
+
+  .faq__item[open]::details-content {
+    height: auto;
+  }
+}
+
+/* ---------- Form (demo .form-control and full-width .btn-dark) ---------- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(8 * var(--fig-px));
+  padding-block: calc(24 * var(--fig-px));
+}
+
+.contact-form__field {
+  width: 100%;
+  padding: 6px 12px;
+  border: 0.8px solid var(--color-divider);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text-body-demo);
+  font: inherit;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  transition:
+    border-color var(--duration-fast) ease,
+    box-shadow var(--duration-fast) ease;
+}
+
+.contact-form__field::placeholder {
+  color: var(--color-text-muted);
+}
+
+.contact-form__field:focus {
+  outline: none;
+  border-color: var(--color-display);
+  box-shadow: 0 0 0 3px rgb(33 37 41 / 0.15);
+}
+
+textarea.contact-form__field {
+  resize: vertical;
+}
+
+.contact-form__submit {
+  width: 100%;
+  padding: 6px 12px;
+  border: 0.8px solid var(--color-button-bg);
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  transition:
+    background-color var(--duration-fast) ease-in-out,
+    transform var(--duration-press) ease-out;
+}
+
+.contact-form__submit:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .contact-form__submit:hover {
+    background: var(--color-button-bg-hover);
+  }
+}
+
+.contact-form__status:empty {
+  display: none;
+}
+
+/*
+ * Below the desktop breakpoint: the demo's stacked layout (measured at 768x1024 and 393x852).
+ * The demo's contact block sits in an extra container, so its content is 20px further in
+ * (20px more than the other sections); copied. FAQ and form stack 48px apart.
+ */
+@media (max-width: 991.98px) {
+  .contact {
+    /* bottom: 24px + the form's own 24px = 48px under Submit (user: no extra scroll below) */
+    padding: var(--hero-mobile-top) calc(var(--hero-mobile-inline) + 20px) 24px;
+    --contact-text: var(--font-size-eyebrow-demo);
+  }
+
+  .contact__intro {
+    width: auto;
+    margin-left: 0;
+  }
+
+  .contact__heading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.625rem + 4.5vw); /* demo .display-1 */
+    line-height: 1.465;
+  }
+
+  .contact__row {
+    grid-template-columns: 100%;
+    row-gap: 48px;
+    margin-top: 64px;
+  }
+
+  .contact__subheading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.3rem + 0.6vw); /* demo h3 */
+  }
+
+  .faq__question {
+    padding-block: var(--space-3);
+    font-size: 1.2rem;
+  }
+
+  .faq__answer {
+    padding-block: var(--space-3);
+  }
+
+  .contact-form {
+    gap: var(--space-2);
+    padding-block: var(--space-4);
+  }
+}
