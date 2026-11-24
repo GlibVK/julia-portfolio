@@ -1,19 +1,37 @@
 /*
  * Large light-grey number behind a section ("01", "02", "03").
- * --bg-number-x / --bg-number-y are the text box position in the 1920px Figma frame;
- * the sidebar width is subtracted because the number sits inside the content column.
+ * --bg-number-x / --bg-number-y are the text box position in the 1920px Figma frame (unitless);
+ * 400 (the Figma sidebar width) is subtracted because the number sits inside the content column.
+ * Everything scales with --fig-px, like the rest of the composition.
  */
 .bg-number {
   position: absolute;
-  top: var(--bg-number-y, 463px);
-  left: calc(var(--bg-number-x, 1342px) - var(--sidebar-width));
+  top: calc(var(--bg-number-y, 463) * var(--fig-px));
+  left: calc((var(--bg-number-x, 1342) - 400) * var(--fig-px));
   z-index: 0;
   color: var(--color-bg-number);
-  font-size: var(--font-size-bg-number);
+  font-size: calc(600 * var(--fig-px)); /* --font-size-bg-number at 1920px */
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-auto);
   letter-spacing: var(--letter-spacing-bg-number);
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
+}
+
+/*
+ * Below 992px the content stacks and its height varies with the width, so a Figma-based
+ * top position lands at a different spot on every screen. As in the demo (.bg-text::after):
+ * 600px, line-height 0.7, right edge at the section's right edge, 100px above its bottom;
+ * on phones the left part of "0" runs off the screen.
+ */
+@media (max-width: 991.98px) {
+  .bg-number {
+    top: auto;
+    left: auto;
+    right: var(--hero-mobile-inline);
+    bottom: var(--bg-number-mobile-offset);
+    font-size: var(--bg-number-mobile-size);
+    line-height: 0.7;
+  }
 }

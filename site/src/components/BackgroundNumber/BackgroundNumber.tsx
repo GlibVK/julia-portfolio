@@ -16,8 +16,8 @@ export type BackgroundNumberProps = {
  */
 export function BackgroundNumber({ value, x, y }: BackgroundNumberProps) {
   const style = {
-    ...(x !== undefined && { '--bg-number-x': `${x}px` }),
-    ...(y !== undefined && { '--bg-number-y': `${y}px` }),
+    ...(x !== undefined && { '--bg-number-x': x }),
+    ...(y !== undefined && { '--bg-number-y': y }),
   } as CSSProperties;
 
   return (

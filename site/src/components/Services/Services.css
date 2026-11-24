@@ -1,0 +1,46 @@
+/*
+ * Service item, styled as in the live demo (user request 2026-11-24):
+ * number 14.4px #333, title 28px Bold #212529 (line 1.2), text 14.4px #333 (line 1.7),
+ * 8px between title and text. Sizes scale with --fig-px on desktop with a readable minimum;
+ * the section CSS places the list.
+ */
+.services__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.services__number {
+  color: var(--color-text-body-demo);
+  font-size: max(0.625rem, calc(14.4 * var(--fig-px)));
+  line-height: var(--line-height-body);
+}
+
+.services__title {
+  color: var(--color-display);
+  font-size: max(0.875rem, calc(28 * var(--fig-px)));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+.services__text {
+  margin-top: calc(8 * var(--fig-px));
+  color: var(--color-text-body-demo);
+  font-size: max(0.75rem, calc(14.4 * var(--fig-px)));
+  line-height: var(--line-height-body);
+}
+
+/* Stacked layouts: the 2000px-desktop sizes. */
+@media (max-width: 991.98px) {
+  .services__number {
+    font-size: var(--font-size-eyebrow-demo);
+  }
+
+  .services__title {
+    font-size: calc(1.3rem + 0.6vw); /* demo h3 (Bootstrap): 23px at 393, 25px at 768 */
+  }
+
+  .services__text {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-eyebrow-demo);
+  }
+}

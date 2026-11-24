@@ -26,21 +26,24 @@
 
 /*
  * Three bars of equal thickness, --menu-bar-step apart (7.2px = 9 screen px at 125%;
- * the smallest crisp step there is 0.8px). All are 16px long; the middle one is clipped
- * to its right 10px (as in Figma) and is revealed to full length on hover.
- * clip-path keeps the real 16px size, so the full middle bar matches the others exactly
- * (scaleX stretched and blurred it, making it look slightly longer).
+ * the smallest crisp step there is 0.8px). Top and bottom are 16px long; the middle one is
+ * 10px, right-aligned (as in Figma), and grows to the full 16px on hover.
+ *
+ * Crisp edges (user feedback: grey pixels around the bars at 125% scaling):
+ * - the middle bar changes its real width; clip-path (used before) is painted without pixel
+ *   snapping, which left a half-grey row under the bar and a grey right edge;
+ *   scaleX blurs it too. Width on a 2px element is cheap to animate.
+ * - square ends, no border-radius: a 1px radius turned every corner pixel grey.
  */
 .menu-icon__bar {
   position: absolute;
   inset-inline: 0;
   height: 2px;
-  border-radius: 1px;
   background: var(--color-text);
   transition:
     transform var(--duration-icon) var(--ease-out),
     opacity var(--duration-icon) var(--ease-out),
-    clip-path var(--duration-icon) var(--ease-out);
+    width var(--duration-icon) var(--ease-out);
 }
 
 .menu-icon__bar--top {
@@ -49,7 +52,8 @@
 
 .menu-icon__bar--middle {
   top: var(--menu-bar-step);
-  clip-path: inset(0 0 0 37.5%); /* shows the right 10px of 16px */
+  inset-inline: auto 0; /* anchored right, grows to the left */
+  width: 10px;
 }
 
 .menu-icon__bar--bottom {
@@ -58,12 +62,12 @@
 
 @media (hover: hover) {
   .menu-button:hover .menu-icon__bar--middle {
-    clip-path: inset(0);
+    width: 16px;
   }
 }
 
 .menu-button:focus-visible .menu-icon__bar--middle {
-  clip-path: inset(0);
+  width: 16px;
 }
 
 /* Close button: the bars form an X. @starting-style makes them morph from the burger shape. */

@@ -1,9 +1,11 @@
+import { HomeHero } from './components/HomeHero/HomeHero';
 import { Menu } from './components/Menu/Menu';
 import { PageLayout } from './components/PageLayout/PageLayout';
 import { Section } from './components/Section/Section';
 import { SidebarContent } from './components/Sidebar/SidebarContent';
 import { navItems, sectionIds } from './data/site';
 import { useActiveNavItem } from './hooks/useActiveNavItem';
+import { useSmoothWheel } from './hooks/useSmoothWheel';
 
 /**
  * Page skeleton. Each Section is one Figma frame; content is added section by section
@@ -11,12 +13,16 @@ import { useActiveNavItem } from './hooks/useActiveNavItem';
  */
 export function App() {
   const { activeHref, onNavigate } = useActiveNavItem(navItems, sectionIds);
+  useSmoothWheel();
 
   return (
     <>
       <PageLayout sidebar={<SidebarContent activeHref={activeHref} onNavigate={onNavigate} />}>
         {/* Figma 1:130 — content: sections 02, 03 */}
-        <Section id="home" label="Home" bgNumber={{ value: '01', x: 1342, y: 463 }} />
+        {/* bg "01" at the demo's place (glyph baseline y ~806), not Figma's (1342, 463) */}
+        <Section id="home" label="Home" bgNumber={{ value: '01', x: 1325, y: 249 }}>
+          <HomeHero />
+        </Section>
         {/* Figma 1:63 — content: section 04 */}
         <Section id="about" label="About" bgNumber={{ value: '01', x: 1342, y: 463 }} />
         {/* Figma 1:183 — content: section 05 */}

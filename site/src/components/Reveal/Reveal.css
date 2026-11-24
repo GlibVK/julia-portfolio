@@ -1,0 +1,26 @@
+/*
+ * Scroll reveal, copied from the demo (AOS, duration 1200): the element starts transparent and
+ * shifted by 100px, then opacity and position change together over 1.2s with "ease".
+ * Elements are hidden only when JS runs (html.js, set in main.tsx) and the user has not asked
+ * for reduced motion; otherwise they are shown as-is.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-reveal),
+      transform var(--duration-reveal) var(--ease-reveal);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .js [data-reveal]:not([data-visible]) {
+    opacity: 0;
+  }
+
+  .js [data-reveal='fade-up']:not([data-visible]) {
+    transform: translateY(var(--reveal-distance));
+  }
+
+  .js [data-reveal='fade-right']:not([data-visible]) {
+    transform: translateX(calc(-1 * var(--reveal-distance)));
+  }
+}

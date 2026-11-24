@@ -15,7 +15,11 @@ type SectionProps = {
 export function Section({ id, label, bgNumber, children }: SectionProps) {
   return (
     <section id={id} className="section" aria-label={label}>
-      {bgNumber && <BackgroundNumber {...bgNumber} />}
+      {bgNumber && (
+        <div className="section__bg">
+          <BackgroundNumber {...bgNumber} />
+        </div>
+      )}
       <div className="section__content">{children}</div>
     </section>
   );

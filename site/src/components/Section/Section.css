@@ -2,7 +2,19 @@
 .section {
   position: relative;
   min-height: var(--section-min-height);
-  overflow: clip; /* the background number overflows the frame, as in Figma */
+  /*
+   * Only horizontal overflow is clipped. Vertical clipping would also cut fade-up blocks
+   * while they start below the section edge, and stop "fit" reveals from ever firing.
+   */
+  overflow-x: clip;
+}
+
+/* The background number overflows the frame, as in Figma; this layer cuts it at the section edges. */
+.section__bg {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
 }
 
 .section__content {

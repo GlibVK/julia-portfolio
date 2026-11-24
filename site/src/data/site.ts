@@ -48,6 +48,18 @@ export const projectsGroup: NavGroup = {
 
 export const contactEmail = 'contact@yoursite.com';
 
+export type Service = { title: string; text: string };
+
+/** Home services row (Figma 1:162, 1:166, 1:170); numbers 01-03 come from the order. */
+export const services: Service[] = [
+  { title: 'UI/UX Design', text: 'At in proin consequat ut cursus venenatis sapien.' },
+  { title: 'Illustration', text: 'At in proin consequat ut cursus venenatis sapien.' },
+  { title: 'Graphic Design', text: 'At in proin consequat ut cursus venenatis sapien.' },
+];
+
+/** "View all works" button. Placeholder: points to the Works section until a projects page exists. */
+export const allWorksLink = { label: 'View all works', href: '#works' };
+
 export type SocialLink = { name: string; href: string; icon: string };
 
 /** Order follows Figma (frame 1:144). */

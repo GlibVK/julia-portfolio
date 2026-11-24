@@ -1,0 +1,247 @@
+/*
+ * Home hero.
+ * Layout and type follow the live demo (https://demo.templatesjungle.com/julia/), measured at
+ * a 2000x978 viewport (user request 2026-11-24: "match the demo"). The picture artwork and its
+ * inner geometry come from Figma (frame 1:130); the demo uses the same art.
+ * Numbers are page px at that width, where --fig-px = 1; CSS left = page x - 400 (sidebar).
+ * Desktop values are multiplied by --fig-px, so the composition shrinks as one piece
+ * on narrower screens instead of running off the right edge.
+ */
+.hero {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--section-min-height);
+}
+
+/*
+ * Portrait group (Figma 1:178 "pic", 845x845, drawn at 98% = 828.5px: the demo's banner image
+ * is that much smaller). Placed so the yellow diamond and the portrait line up with the demo
+ * (yellow x ~570-1148, head top y ~48, jeans end y ~715).
+ */
+.hero__pic {
+  position: absolute;
+  left: calc((454.4 - 400) * var(--fig-px));
+  top: calc(-51.2 * var(--fig-px));
+  width: var(--hero-pic-size);
+  aspect-ratio: 1;
+  z-index: 1; /* in Figma the picture is the top layer: the yellow tip overlaps the name */
+  /* Children measure themselves in this box's width (cqw), so the group scales as one piece. */
+  container-type: inline-size;
+}
+
+/*
+ * --u is one Figma pixel of the 845.38px picture group. It equals 1px at the design width
+ * and shrinks with the group on small screens, so every value below keeps its Figma number.
+ */
+.hero__pic > * {
+  --u: calc(100cqw / 845.38);
+}
+
+/*
+ * Both shapes are rounded rectangles rotated 45deg around their top-left corner,
+ * which is how Figma stores them (transform matrix), so the same origin is used here.
+ */
+.hero__shape,
+.hero__mask {
+  position: absolute;
+  border-radius: calc(var(--radius-hero-shape) * var(--u));
+  transform: rotate(45deg);
+  transform-origin: 0 0;
+}
+
+/* Yellow diamond behind the portrait (Figma 1:179) */
+.hero__shape {
+  left: calc(409.46 * var(--u));
+  top: calc(130 * var(--u));
+  width: calc(513.6 * var(--u));
+  height: calc(498.09 * var(--u));
+  background: var(--color-accent);
+}
+
+/*
+ * Invisible, larger diamond that clips the portrait (Figma 1:181, an alpha mask).
+ * The head rises above the yellow shape but is still cut by this outline,
+ * and the jeans end in the mask's bottom corner.
+ */
+.hero__mask {
+  left: calc(424.95 * var(--u));
+  top: 0;
+  width: calc(594.58 * var(--u));
+  height: calc(600.97 * var(--u));
+  overflow: hidden;
+}
+
+/*
+ * The portrait is rotated back by -45deg so it stands upright.
+ * left/top are its Figma position (203.11, 94.65) converted into the mask's rotated
+ * coordinate system: R(-45deg) x ((203.11, 94.65) - (424.95, 0)).
+ */
+.hero__portrait {
+  position: absolute; /* inherits --u from the mask; cqw still refers to .hero__pic */
+  left: calc(-89.94 * var(--u));
+  top: calc(223.79 * var(--u));
+  width: calc(423 * var(--u));
+  height: calc(770 * var(--u));
+  max-width: none;
+  object-fit: cover;
+  transform: rotate(-45deg);
+  transform-origin: 0 0;
+}
+
+/* ---------- Text block (demo: label text at x 1166, y 147; name lines at y 168 / 420) ---------- */
+.hero__text {
+  position: absolute;
+  left: calc((1166 - 400) * var(--fig-px));
+  /* label line box: 147 (glyph box top) - (24.48 - 17) / 2 */
+  top: calc(143 * var(--fig-px));
+}
+
+/* Demo: 14.4px regular, uppercase, muted grey, no extra letter spacing. */
+.hero__role {
+  color: var(--color-text-muted);
+  font-size: max(var(--font-size-eyebrow), calc(14.4 * var(--fig-px)));
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  text-transform: uppercase;
+}
+
+/*
+ * Demo: Roboto Bold 218px, letter spacing -6%, #212529; the two lines are 252px apart
+ * (line-height 252 / 218). Top 151 puts the first baseline where the demo has it (y ~352).
+ */
+.hero__name {
+  /* 151 (name top) - 143 (label top) - 24.48 (label line) */
+  margin-top: calc(-16.48 * var(--fig-px));
+  width: calc(592 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(218 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-hero-name);
+  letter-spacing: var(--letter-spacing-hero-name);
+}
+
+/* ---------- Services row (demo: y 732; items at x 550, 858, 1166, 308px apart, 284 wide) ---------- */
+.hero__services {
+  position: absolute;
+  left: calc((550 - 400) * var(--fig-px));
+  top: calc(732 * var(--fig-px));
+  display: grid;
+  grid-template-columns: repeat(3, calc(308 * var(--fig-px)));
+}
+
+.hero__services .services__item {
+  max-width: calc(284 * var(--fig-px));
+}
+
+/*
+ * "View all works" (Figma 1:140). As in the demo: the fourth column of the services row
+ * (x 1474, y 732), 217x74. Figma put it in the frame's bottom-right corner, which was
+ * below the screen on most laptops.
+ */
+.hero__cta {
+  position: absolute;
+  left: calc((1474 - 400) * var(--fig-px));
+  top: calc(732 * var(--fig-px));
+}
+
+.hero__button {
+  width: calc(217 * var(--fig-px));
+  height: calc(74 * var(--fig-px));
+}
+
+/* Desktop: the image box has no box of its own; .hero__pic is placed against .hero. */
+.hero__media {
+  display: contents;
+}
+
+/*
+ * Below the desktop breakpoint (no sidebar) — the demo's stacked layout, measured at
+ * 393x852 and 768x1024 (user request 2026-11-24):
+ * - one column with 48px side padding, 48px above the picture;
+ * - the picture box is the column width, at most 596px (the demo image's own width),
+ *   centred when the column is wider; its height follows the demo image (592x684);
+ * - label, name, services and button below it, aligned to the left edge;
+ * - name: calc(3rem + 8.5vw), one or two lines depending on the width.
+ * Keep 992px in sync with PageLayout.css and Menu.tsx.
+ */
+@media (max-width: 991.98px) {
+  .hero {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: var(--hero-mobile-top) var(--hero-mobile-inline) var(--hero-mobile-bottom);
+  }
+
+  /*
+   * The demo's banner image box. The Figma picture group (.hero__pic) is larger than the
+   * visible diamond + portrait, so it is sized and shifted relative to this box with the
+   * same proportions as on desktop: group = 1.3995 x box width, offset (-16.15%, -16.75%)
+   * of the box width (desktop: box 592 at (550, 48), group 828.5 at (454.4, -51.2)).
+   */
+  .hero__media {
+    position: relative;
+    display: block;
+    width: min(100%, var(--hero-mobile-max));
+    margin-inline: auto;
+    aspect-ratio: 592 / 684;
+    container-type: inline-size;
+  }
+
+  .hero__pic {
+    left: -16.15cqw;
+    top: -16.75cqw;
+    width: 139.95cqw;
+  }
+
+  .hero__text,
+  .hero__services,
+  .hero__cta {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: auto;
+  }
+
+  /* Label line box starts 8px under the picture box (demo: margin 4px + padding 4px). */
+  .hero__text {
+    margin-top: var(--space-2);
+  }
+
+  .hero__role {
+    font-size: var(--font-size-eyebrow-demo);
+  }
+
+  .hero__name {
+    width: auto;
+    /* same baseline rule as on desktop: the first line's word box starts at the label's bottom */
+    margin-top: -0.078em;
+    font-size: var(--font-size-display-fluid);
+  }
+
+  /*
+   * Services: one under another, 16px apart, 8px under the name box (demo h1 margin).
+   * The demo's name box ends 0.078em lower than ours (its letters sit at the top of each
+   * line, ours are centred), so that difference is added here.
+   */
+  .hero__services {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: calc(var(--space-2) + 0.078 * var(--font-size-display-fluid));
+  }
+
+  .hero__services .services__item {
+    max-width: none;
+  }
+
+  .hero__cta {
+    margin-top: var(--space-3);
+  }
+
+  .hero__button {
+    width: var(--button-mobile-width);
+    height: var(--button-mobile-height);
+    font-size: var(--font-size-body);
+  }
+}

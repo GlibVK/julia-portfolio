@@ -1,0 +1,27 @@
+/*
+ * Each word clips its letters, so a letter moved down by 1.2em is hidden.
+ * The vertical padding keeps glyph tops and bottoms visible with tight line heights
+ * (0.8 on "Julia Stiles"); the negative margin cancels it, so layout does not change.
+ */
+.split-text__word {
+  display: inline-block;
+  overflow: hidden;
+  padding-block: var(--split-text-bleed);
+  margin-block: calc(-1 * var(--split-text-bleed));
+  vertical-align: top;
+}
+
+.split-text__letter {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-split-text] .split-text__letter {
+    transition: transform var(--duration-text) var(--ease-text);
+    transition-delay: calc(var(--text-delay-base) + var(--letter-index, 0) * var(--text-delay-step));
+  }
+
+  .js [data-split-text]:not([data-visible]) .split-text__letter {
+    transform: translate3d(0, 1.2em, 0);
+  }
+}

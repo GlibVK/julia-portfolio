@@ -1,0 +1,33 @@
+/*
+ * As in the live demo (Bootstrap btn-dark): #212529, 16px regular uppercase, no radius
+ * (Figma 1:140 had #111 and Bold). The size is set by the section (it scales with --fig-px
+ * on desktop); the text never shrinks below 11px and the button never gets narrower than
+ * its text plus padding.
+ */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: max-content;
+  padding-inline: var(--space-4);
+  background: var(--color-button-bg);
+  color: var(--color-button-text);
+  font-size: max(0.6875rem, calc(16 * var(--fig-px)));
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-lead);
+  text-transform: uppercase;
+  transition:
+    background-color var(--duration-fast) ease-in-out,
+    transform var(--duration-press) ease-out;
+}
+
+/* Wrap the button in <Reveal> rather than revealing it directly, so the two transforms don't clash. */
+.button:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background: var(--color-button-bg-hover);
+  }
+}

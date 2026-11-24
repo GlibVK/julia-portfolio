@@ -8,20 +8,25 @@
   /* ---------- Colors ---------- */
   --color-bg: #ffffff;
   --color-text: #111111;        /* nav, logo, primary text */
-  --color-heading: #333333;     /* large headings: "Julia Stiles", "Portfolio" */
+  --color-heading: #333333;     /* large Figma headings: "Portfolio" (the home name uses --color-display) */
   --color-ink: #000000;         /* small labels, service titles, lines, icons */
   --color-body: #666666;        /* body copy under service titles */
   --color-muted: #777777;       /* lead paragraphs */
   --color-bg-number: #f1f1f1;   /* large background numbers "01", "02", "03" */
   --color-accent: #ffcc1e;      /* yellow shape behind the portrait */
-  --color-button-bg: #111111;
+  /* Demo (Bootstrap) colours used on the home screen, user request 2026-11-24 */
+  --color-display: #212529;     /* "Julia Stiles", service titles (demo) */
+  --color-text-muted: rgb(33 37 41 / 0.75); /* "Designer / Developer" label (demo .text-muted) */
+  --color-text-body-demo: #333333;          /* service numbers and text (demo body colour) */
+  --color-button-bg: #212529;   /* demo btn-dark (Figma: #111) */
   --color-button-text: #ffffff;
+  --color-button-bg-hover: #424649; /* demo hover value */
   --color-line: #000000;        /* 1px black lines from Figma */
   --color-divider: #dee2e6;     /* grey sidebar dividers (user feedback, demo value) */
   --color-icon-muted: #8a8a8a;  /* collapsed "Projects" chevron */
 
   /* ---------- Typography ---------- */
-  --font-sans: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-sans: "Roboto", "Roboto Fallback", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -29,27 +34,28 @@
   --font-weight-black: 900;
 
   --font-size-bg-number: 37.5rem;  /* 600px */
-  --font-size-display: 14.25rem;   /* 228px, "Julia Stiles" */
-  --font-size-h1: 4.5rem;          /* 72px, "Portfolio", "Experienced Creative mind" */
+  --font-size-display-fluid: calc(3rem + 8.5vw); /* name below 992px, as the demo .display-xl (81px at 393, 113px at 768) */
+  --font-size-h1: 4.5rem;         /* 72px, "Portfolio", "Experienced Creative mind" */
   --font-size-logo: 4rem;          /* 64px, "Julia." */
   --font-size-h3: 1.375rem;        /* 22px, service titles */
   --font-size-lead: 1.3125rem;     /* 21px, intro paragraphs */
-  --font-size-label: 1.25rem;      /* 20px, "Designer / developer" */
   --font-size-nav: 1.125rem;       /* 18px, sidebar nav and email */
   --font-size-body: 1rem;          /* 16px, body copy and button */
   --font-size-eyebrow: 0.75rem;    /* 12px, "introduction", "01" above services */
+  --font-size-eyebrow-demo: 0.9rem; /* 14.4px, demo label, service numbers and text */
 
   /* Figma "Auto" line height = Roboto's natural line height (ascent + descent) */
   --line-height-auto: 1.172;
-  --line-height-display: 0.8;      /* "Julia Stiles" */
   --line-height-body: 1.7;         /* body, service titles, eyebrows */
   --line-height-lead: 1.8;         /* lead paragraphs, button */
   --line-height-contact: 2.4;      /* sidebar email */
   --line-height-nav: 2.8;          /* sidebar nav list */
 
   --letter-spacing-bg-number: -0.1em;  /* -10% */
-  --letter-spacing-tight: -0.05em;     /* -5%, logo and display name */
-  --letter-spacing-wide: 0.1em;        /* 10%, eyebrows and the role label */
+  --letter-spacing-tight: -0.05em;     /* -5%, logo */
+  --letter-spacing-wide: 0.1em;        /* 10%, eyebrows */
+  --letter-spacing-hero-name: -0.06em; /* demo "Julia Stiles" */
+  --line-height-hero-name: 1.156;      /* demo: lines 252px apart at 218px */
 
   /* ---------- Spacing scale ---------- */
   --space-1: 0.25rem;  /* 4px */
@@ -66,7 +72,29 @@
   --sidebar-width: 400px;       /* fixed left column; content in the mockup starts at x >= 412 */
   --sidebar-inset-x: 63px;      /* left edge of the logo and nav */
   --sidebar-inset-top: 47px;    /* top edge of the "Julia." logo */
-  --section-min-height: 1024px; /* height of one Figma frame */
+  /*
+   * One Figma pixel of the content column. The column is 1520px wide in Figma (1920 - 400);
+   * on narrower desktops the whole composition shrinks with it, so nothing runs off screen.
+   * Equals 1px at 1920px and wider. Use as calc(<Figma value> * var(--fig-px)).
+   */
+  --fig-px: min(1px, (100vw - var(--sidebar-width)) / 1520);
+  /*
+   * A section is one Figma frame (1024 Figma px) but never shorter than the screen,
+   * so the next section (and its background number) only appears after scrolling.
+   * svh = the small viewport height, stable while mobile browser bars show and hide.
+   */
+  --section-min-height: max(calc(1024 * var(--fig-px)), 100svh);
+
+  --radius-hero-shape: 150;     /* yellow diamond and portrait mask, in Figma px of the hero group */
+  --hero-pic-size: calc(828.5 * var(--fig-px)); /* home hero picture group (Figma 1:178, 845.38) at 98%, as in the demo */
+
+  /* Home hero below 992px (stacked layout) */
+  --hero-mobile-top: 48px;      /* demo: section padding above the picture */
+  --hero-mobile-inline: 48px;   /* demo: 36px container + 12px column padding */
+  --hero-mobile-bottom: 48px;   /* demo: section padding under the button */
+  --hero-mobile-max: 596px;     /* picture box width cap = demo banner image width */
+  --button-mobile-width: 217px;  /* demo button */
+  --button-mobile-height: 74px; /* demo button */
 
   --border-hairline: 1px solid var(--color-line);
   --line-thin: 0.5px;   /* sidebar grey dividers, rounded ends */
@@ -80,12 +108,28 @@
   --duration-toggle: 350ms;         /* Projects chevron and submenu (demo value) */
   --duration-drawer-open: 300ms;
   --duration-drawer-close: 200ms;
-  --duration-reveal: 800ms;
+  --duration-press: 100ms;          /* button :active scale */
+  --duration-reveal: 1200ms;        /* scroll reveals, demo AOS duration */
+  --duration-text: 900ms;           /* heading letter slide-up (demo value) */
+  --reveal-distance: 100px;         /* fade-up / fade-right start shift (AOS); keep SHIFT_PX in Reveal.tsx in sync */
+  --text-delay-base: 100ms;         /* first letter delay (demo value) */
+  --text-delay-step: 10ms;          /* extra delay per letter (demo value) */
+  --split-text-bleed: 0.1em;        /* room above/below clipped words for tight line heights */
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-reveal: ease;                      /* scroll reveals, demo AOS easing */
   --ease-underline: ease-out;               /* demo value */
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-text: cubic-bezier(0.5, 0, 0.53, 1); /* heading letters (demo value) */
 
   --color-backdrop: rgb(0 0 0 / 0.3);
+}
+
+/* Below 992px the sidebar is hidden, so the content column is the full viewport width. */
+@media (max-width: 991.98px) {
+  :root {
+    --fig-px: min(1px, 100vw / 1520);
+    --bg-number-mobile-size: 37.5rem;     /* background "01": 600px, as in the demo */
+    --bg-number-mobile-offset: 100px;     /* demo: 100px above the section bottom (line-height 0.7) */
+  }
 }
