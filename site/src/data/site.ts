@@ -1,11 +1,5 @@
 // Site content shared by the sidebar and the menu drawer.
 // Placeholder links: replace the email and social URLs with real ones before launch.
-import facebookIcon from '@figma/01-sidebar/social/facebook.svg';
-import instagramIcon from '@figma/01-sidebar/social/instagram.svg';
-import twitterIcon from '@figma/01-sidebar/social/twitter.svg';
-import skypeIcon from '@figma/01-sidebar/social/skype.svg';
-import linkedinIcon from '@figma/01-sidebar/social/linkedin.svg';
-import dribbbleIcon from '@figma/01-sidebar/social/dribbble.svg';
 
 export type NavItem = {
   label: string;
@@ -15,18 +9,19 @@ export type NavItem = {
   section: string;
 };
 
-/** Nav order and labels follow Figma frame 1:130. */
+/**
+ * Nav as in the live demo (user decision 2026-11-24): one item per section, in page order
+ * (the demo's Contact and Get PRO are not built; Projects follows as a collapsible group).
+ */
 export const navItems: NavItem[] = [
   { label: 'Home', href: '#home', section: 'home' },
   { label: 'About', href: '#about', section: 'about' },
+  { label: 'Experience', href: '#experience', section: 'experience' },
   { label: 'Works', href: '#works', section: 'works' },
-  // Experience and Education share one screen (biodata, section 06).
-  { label: 'Experience', href: '#experience', section: 'biodata' },
-  { label: 'Education', href: '#education', section: 'biodata' },
 ];
 
-/** Page section ids in scroll order, used by the scrollspy. */
-export const sectionIds = [...new Set(navItems.map((item) => item.section))];
+/** Page section ids in scroll order (as in App.tsx), used by the scrollspy. */
+export const sectionIds = navItems.map((item) => item.section);
 
 export type NavGroup = {
   label: string;
@@ -57,19 +52,120 @@ export const services: Service[] = [
   { title: 'Graphic Design', text: 'At in proin consequat ut cursus venenatis sapien.' },
 ];
 
+export type BiodataEntry = { date: string; title: string; text: string };
+export type BiodataGroup = { heading: string; entries: BiodataEntry[] };
+
+/**
+ * About section ("BIODATA"), as in the live demo's section "02": four groups in a 2x2 grid.
+ * Placeholders from the demo: replace with real details before launch.
+ */
+export const biodata = {
+  eyebrow: 'Biodata',
+  groups: [
+    {
+      heading: 'Education',
+      entries: [
+        {
+          date: '1998 - 2004',
+          title: 'Bachelors in Engineering in Information Technology',
+          text: 'Harvard School of Science and management',
+        },
+        { date: '2004 - 2006', title: 'Masters in Data Analysis', text: 'Harvard School of Science and management' },
+      ],
+    },
+    {
+      heading: 'Experiences',
+      entries: [
+        {
+          date: '2007 - 2012',
+          title: 'Creative Agency Inc.: Design head',
+          text: 'iacentem substantiales um se sed esse haec Possit facis qui a a a patriam.',
+        },
+        {
+          date: '2013 - present',
+          title: 'Studio Alpha.: Project Manager',
+          text: 'iacentem substantiales um se sed esse haec Possit facis qui a a a patriam.',
+        },
+      ],
+    },
+    {
+      heading: 'Interests',
+      entries: [
+        {
+          date: '2007 - 2012',
+          title: 'Bachelors in Engineering in Information Technology',
+          text: 'Harvard School of Science and management',
+        },
+        {
+          date: '2013 - present',
+          title: 'Studio Alpha.: Project Manager',
+          text: 'iacentem substantiales um se sed esse haec Possit facis qui a a a patriam.',
+        },
+      ],
+    },
+    {
+      heading: 'References',
+      entries: [
+        {
+          date: '1998 - 2004',
+          title: 'Dr. Stephen H. King',
+          text: 'iacentem substantiales um se sed esse haec Possit facis qui a a a patriam.',
+        },
+        {
+          date: '2004 - 2006',
+          title: 'Dr. David Howard',
+          text: 'iacentem substantiales um se sed esse haec Possit facis qui a a a patriam.',
+        },
+      ],
+    },
+  ] satisfies BiodataGroup[],
+};
+
+/** Experience section intro, as in the live demo (section "03", user request 2026-11-24). */
+export const experienceIntro = {
+  eyebrow: 'Introduction',
+  heading: 'Experienced Creative mind',
+  text: 'Labore accusam in modo compungi, iacentem substantiales um se sed esse haec.',
+};
+
+export type InfoRow = { label: string; value: string; href?: string };
+
+/** Personal info table (demo). Placeholders: replace with real details before launch. */
+export const personalInfo: InfoRow[] = [
+  { label: 'Age', value: '22' },
+  { label: 'Residence', value: 'United States' },
+  { label: 'Address', value: 'A City, Florida, 32104' },
+  { label: 'E-mail', value: 'hello@yourwebsite.com', href: 'mailto:hello@yourwebsite.com' },
+  { label: 'Phone', value: '+2345 344 678 563', href: 'tel:+2345344678563' },
+];
+
+export type Skill = { name: string; value: number };
+
+/**
+ * Skill bars (demo). value is a percentage: it sets both the label and the bar width
+ * (the demo draws Illustrator at 90% while its label says 75%; ours always match).
+ */
+export const skills: Skill[] = [
+  { name: 'Adobe Photoshop', value: 90 },
+  { name: 'Adobe Illustrator', value: 75 },
+  { name: 'Figma', value: 80 },
+  { name: 'Adobe After Effect', value: 70 },
+  { name: 'Photography', value: 95 },
+];
+
 /** "View all works" button. Placeholder: points to the Works section until a projects page exists. */
 export const allWorksLink = { label: 'View all works', href: '#works' };
 
-export type SocialLink = { name: string; href: string; icon: string };
+export type SocialIcon = 'facebook' | 'twitter' | 'youtube' | 'pinterest' | 'instagram';
+export type SocialLink = { name: string; href: string; icon: SocialIcon };
 
-/** Order follows Figma (frame 1:144). */
+/** Icons and order as in the live demo (user decision 2026-11-24). */
 export const socialLinks: SocialLink[] = [
-  { name: 'Facebook', href: 'https://www.facebook.com/', icon: facebookIcon },
-  { name: 'Instagram', href: 'https://www.instagram.com/', icon: instagramIcon },
-  { name: 'Twitter', href: 'https://twitter.com/', icon: twitterIcon },
-  { name: 'Skype', href: 'https://www.skype.com/', icon: skypeIcon },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/', icon: linkedinIcon },
-  { name: 'Dribbble', href: 'https://dribbble.com/', icon: dribbbleIcon },
+  { name: 'Facebook', href: 'https://www.facebook.com/', icon: 'facebook' },
+  { name: 'Twitter', href: 'https://twitter.com/', icon: 'twitter' },
+  { name: 'YouTube', href: 'https://www.youtube.com/', icon: 'youtube' },
+  { name: 'Pinterest', href: 'https://www.pinterest.com/', icon: 'pinterest' },
+  { name: 'Instagram', href: 'https://www.instagram.com/', icon: 'instagram' },
 ];
 
 export const creditLink = { label: 'TemplatesJungle', href: 'https://templatesjungle.com/' };

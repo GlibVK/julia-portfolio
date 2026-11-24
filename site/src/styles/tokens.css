@@ -24,6 +24,8 @@
   --color-line: #000000;        /* 1px black lines from Figma */
   --color-divider: #dee2e6;     /* grey sidebar dividers (user feedback, demo value) */
   --color-icon-muted: #8a8a8a;  /* collapsed "Projects" chevron */
+  --color-skill-track: #e9ecef; /* skill bar track (demo --bs-gray-200) */
+  --color-skill-fill: #ff534a;  /* skill bar fill (demo --bs-primary) */
 
   /* ---------- Typography ---------- */
   --font-sans: "Roboto", "Roboto Fallback", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
@@ -70,8 +72,9 @@
   /* ---------- Page grid ---------- */
   --design-width: 1920px;       /* Figma frame width */
   --sidebar-width: 400px;       /* fixed left column; content in the mockup starts at x >= 412 */
-  --sidebar-inset-x: 63px;      /* left edge of the logo and nav */
-  --sidebar-inset-top: 47px;    /* top edge of the "Julia." logo */
+  --sidebar-inset-x: 48px;      /* left edge of the logo and nav (demo px-5) */
+  --sidebar-content-width: 235px; /* nav rows, lines (demo: 234.8) */
+  --sidebar-inset-top: 48px;    /* top of the logo ink (demo mt-5) */
   /*
    * One Figma pixel of the content column. The column is 1520px wide in Figma (1920 - 400);
    * on narrower desktops the whole composition shrinks with it, so nothing runs off screen.

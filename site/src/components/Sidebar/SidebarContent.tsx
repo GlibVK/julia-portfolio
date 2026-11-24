@@ -30,7 +30,7 @@ export function SidebarContent({ activeHref, onNavigate, navLabel }: SidebarCont
         <a className="sidebar-content__email" href={`mailto:${contactEmail}`}>
           {contactEmail}
         </a>
-        {/* Grey lines above and below the icons, static (user feedback). */}
+        {/* Grey static lines under the email and under the icons (demo layout). */}
         <div className="sidebar-content__divider" aria-hidden="true" />
         <SocialLinks links={socialLinks} />
         <div className="sidebar-content__divider" aria-hidden="true" />

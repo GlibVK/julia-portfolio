@@ -1,0 +1,186 @@
+/*
+ * Experience section ("Experienced Creative mind") = the live demo's section "03" (user request 2026-11-24), measured at a
+ * 2000x978 viewport, where --fig-px = 1 (numbers below are page px there; CSS left =
+ * page x - 400). Every desktop value is multiplied by --fig-px so the composition shrinks
+ * as one piece between 992 and 2000px; type has readable minimums, and the blocks are in
+ * one flow, so a block that grows pushes the next one down.
+ *
+ * Demo: section padding 48; intro column x 858.5, 592 wide; row below at y 401 with
+ * the info table at x 550.5 and the skills at x 1166.5 (both 592 wide, 24 px py-4 padding).
+ */
+.intro {
+  padding-top: calc(48 * var(--fig-px));
+  padding-left: calc((550.5 - 400) * var(--fig-px));
+  --intro-col: calc(592 * var(--fig-px));
+  --intro-text: max(0.75rem, calc(14.4 * var(--fig-px)));
+}
+
+/* ---------- Introduction (demo .col-lg-6 centred over the row) ---------- */
+.intro__intro {
+  width: var(--intro-col);
+  margin-left: calc((858.5 - 550.5) * var(--fig-px));
+}
+
+/* Demo: 14.4px, uppercase, muted (.text-muted) */
+.intro__eyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--intro-text);
+  line-height: var(--line-height-body);
+  text-transform: uppercase;
+}
+
+/*
+ * Demo .display-1: Roboto Bold 80px, #212529. Its letters are inline-block words, which makes
+ * the lines 116px apart (1.45em) while each word box is 96px (1.2em) at the top of its line.
+ */
+.intro__heading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(80 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.45;
+}
+
+.intro__heading .split-text__word {
+  line-height: 1.2;
+}
+
+.intro__text {
+  color: var(--color-text-body-demo);
+  font-size: var(--intro-text);
+  line-height: var(--line-height-body);
+}
+
+/* ---------- Row: info table and skills, 24px apart ---------- */
+.intro__row {
+  display: grid;
+  grid-template-columns: var(--intro-col) var(--intro-col);
+  column-gap: calc(24 * var(--fig-px));
+  /* p margin 16 + row margin 48 + block padding 24 (demo) */
+  margin-top: calc(88 * var(--fig-px));
+  font-size: var(--intro-text);
+  line-height: var(--line-height-body);
+  color: var(--color-text-body-demo);
+}
+
+/* Demo table: th 33% bold, td regular, 8px cell padding, grey line under every row. */
+.info__row {
+  display: grid;
+  grid-template-columns: 33% 1fr;
+  border-bottom: 0.8px solid var(--color-divider);
+}
+
+.info__label,
+.info__value {
+  padding: calc(8 * var(--fig-px));
+}
+
+.info__label {
+  font-weight: var(--font-weight-bold);
+}
+
+.info__value a {
+  transition: opacity var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .info__value a:hover {
+    opacity: 0.6;
+  }
+}
+
+/* Demo skills: 500 weight, rows 32.5 high + 40 apart, percentage at the right end. */
+.skills {
+  display: flex;
+  flex-direction: column;
+  gap: calc(40 * var(--fig-px));
+  font-weight: var(--font-weight-medium);
+}
+
+.skills__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.skills__header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/*
+ * Demo bar: an 8px grey track (#e9ecef, a 4px border with radius 15) and an 8px red fill
+ * whose width is the value of the track's inner width (592 - 8), starting 1px left of it.
+ */
+.skills__bar {
+  position: relative;
+  height: max(4px, calc(8 * var(--fig-px)));
+  border-radius: 15px;
+  background: var(--color-skill-track);
+}
+
+.skills__fill {
+  position: absolute;
+  inset-block: 0;
+  left: -1px;
+  width: calc((100% - 8px) * var(--skill-value) / 100);
+  border-radius: inherit;
+  background: var(--color-skill-fill);
+  transform-origin: left;
+}
+
+/*
+ * Fill animation (docs/interaction-spec.md section 7; the demo bars are static): the bars grow
+ * from the left when the block is revealed, 1s ease-out, 100ms apart, and empty again when
+ * the reveal resets (scrolling back up). Full bars without JS or with reduced motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .js .intro__skills .skills__fill {
+    transition: transform 1s var(--ease-out);
+    transition-delay: calc(var(--skill-index, 0) * 100ms);
+  }
+
+  .js .intro__skills:not([data-visible]) .skills__fill {
+    transform: scaleX(0);
+  }
+}
+
+/*
+ * Below the desktop breakpoint: the demo's stacked layout (measured at 393x852), one column
+ * with 48px padding: introduction, table (88px lower), skills (64px under the table).
+ */
+@media (max-width: 991.98px) {
+  .intro {
+    padding: var(--hero-mobile-top) var(--hero-mobile-inline) var(--hero-mobile-bottom);
+    --intro-col: auto;
+    --intro-text: var(--font-size-eyebrow-demo);
+  }
+
+  .intro__intro {
+    margin-left: 0;
+  }
+
+  .intro__heading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.625rem + 4.5vw); /* demo .display-1 (44px at 393) */
+  }
+
+  .intro__row {
+    grid-template-columns: 100%;
+    row-gap: 64px; /* table margin 16 + py-4 24 + 24 */
+    margin-top: 88px;
+  }
+
+  .info__label,
+  .info__value {
+    padding: var(--space-2);
+  }
+
+  .skills {
+    gap: 40px;
+  }
+
+  .skills__bar {
+    height: 8px;
+  }
+}

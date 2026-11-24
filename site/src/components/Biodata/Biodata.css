@@ -1,0 +1,111 @@
+/*
+ * About section = the live demo's section "02" (user request 2026-11-24), measured at
+ * 2000x978 where --fig-px = 1 (page px; CSS left = page x - 400). Desktop values are
+ * multiplied by --fig-px, so the grid shrinks as one piece between 992 and 2000px;
+ * type has readable minimums and everything is in one flow.
+ *
+ * Demo: section padding 48; columns 592 wide at x 550.5 and 1166.5; second row at y 488.8.
+ */
+.biodata {
+  padding-top: calc(48 * var(--fig-px));
+  padding-left: calc((550.5 - 400) * var(--fig-px));
+  --biodata-text: max(0.75rem, calc(14.4 * var(--fig-px)));
+}
+
+.biodata__row {
+  display: grid;
+  grid-template-columns: repeat(2, calc(592 * var(--fig-px)));
+  column-gap: calc(24 * var(--fig-px));
+  align-items: start;
+}
+
+/* Demo .col-lg-6.pb-5 */
+.biodata__group {
+  padding-bottom: calc(48 * var(--fig-px));
+}
+
+/* Demo: 14.4px, uppercase, muted */
+.biodata__eyebrow {
+  color: var(--color-text-muted);
+  font-size: var(--biodata-text);
+  line-height: var(--line-height-body);
+  text-transform: uppercase;
+}
+
+/*
+ * Demo .display-4: Roboto Bold 56px, #212529, 8px margin. The inline-block letter words make
+ * its box 81.6px high (1.457em) with each 67.2px (1.2em) word at the top.
+ */
+.biodata__heading {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: calc(56 * var(--fig-px));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.457;
+}
+
+.biodata__heading .split-text__word {
+  line-height: 1.2;
+}
+
+/* Demo .data-info: the first entry of a group has 16px padding above and below (py-3). */
+.biodata__entry:first-of-type {
+  padding-block: calc(16 * var(--fig-px));
+}
+
+.biodata__date,
+.biodata__text {
+  color: var(--color-text-body-demo);
+  font-size: var(--biodata-text);
+  line-height: var(--line-height-body);
+}
+
+/* Demo .info-title: 28px Bold, line height 1.2, 8px margin */
+.biodata__title {
+  margin-bottom: calc(8 * var(--fig-px));
+  color: var(--color-display);
+  font-size: max(1rem, calc(28 * var(--fig-px)));
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+.biodata__text {
+  margin-bottom: calc(16 * var(--fig-px));
+}
+
+/*
+ * Below the desktop breakpoint: the demo's stacked layout (measured at 393x852), one column
+ * with 48px padding, groups in the order Education, Experiences, Interests, References.
+ */
+@media (max-width: 991.98px) {
+  .biodata {
+    padding: var(--hero-mobile-top) var(--hero-mobile-inline) var(--hero-mobile-bottom);
+    --biodata-text: var(--font-size-eyebrow-demo);
+  }
+
+  .biodata__row {
+    grid-template-columns: 100%;
+  }
+
+  .biodata__group {
+    padding-bottom: var(--space-6);
+  }
+
+  .biodata__heading {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.475rem + 2.7vw); /* demo .display-4 (34px at 393) */
+  }
+
+  .biodata__entry:first-of-type {
+    padding-block: var(--space-3);
+  }
+
+  .biodata__title {
+    margin-bottom: var(--space-2);
+    font-size: calc(1.3rem + 0.6vw); /* demo h3 (23px at 393) */
+  }
+
+  .biodata__text {
+    margin-bottom: var(--space-3);
+  }
+}

@@ -1,19 +1,18 @@
-/* Social icons row (Figma 1:144): 26px icons at x 0, 35, 80, 126, 171, 217. */
+/* Social icons row, as in the live demo: 24px outline icons, 16px apart (gap-3), #212529. */
 .social-links {
   display: flex;
-  align-items: center;
-  gap: 19.4px;
-  height: 29px;
-}
-
-/* The Facebook glyph is narrow, so Figma places the next icon closer. */
-.social-links li:first-child {
-  margin-inline-end: -10.4px;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .social-links__link {
   display: block;
+  color: var(--color-display);
   transition: opacity var(--duration-fast) ease;
+}
+
+.social-links__link svg {
+  display: block;
 }
 
 @media (hover: hover) {

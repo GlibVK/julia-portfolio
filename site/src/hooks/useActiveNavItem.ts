@@ -3,8 +3,8 @@ import type { NavItem } from '../data/site';
 import { useActiveSection } from './useActiveSection';
 
 /**
- * Which nav link is active. Several links can share one section (biodata),
- * so the last clicked link wins inside that section; otherwise the first one.
+ * Which nav link is active. Today each section has one link; if several links ever share
+ * a section, the last clicked one wins inside it, otherwise the first one.
  */
 export function useActiveNavItem(items: readonly NavItem[], sectionIds: readonly string[]) {
   const activeSection = useActiveSection(sectionIds);

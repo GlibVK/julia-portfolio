@@ -143,7 +143,7 @@
     display var(--duration-icon) allow-discrete;
 }
 
-/* Tablets: the same 63px left inset as the desktop sidebar. */
+/* Tablets: the same 48px left inset as the desktop sidebar. */
 @media (min-width: 576px) {
   .menu-drawer {
     --drawer-width: 360px;

@@ -23,7 +23,7 @@ Labels used below:
 | Menu icon top right | visible on desktop (`1:133`, 24px at x 1837, y 63) | hidden on desktop; a burger only below 992px |
 | Nav dividers | two 1px black lines (under the logo area and above the email), arrow icon next to the active item | 1px grey line under every item, no arrow |
 
-Rule: **layout, content and colours follow Figma; motion and states follow the demo**, with the improvements listed here. Exception (user, 2026-11-24): the home screen (hero, services, button, background "01") copies the demo's layout and type; see "Home screen follows the demo" in `layout-plan.md`.
+Rule: **layout, content and colours follow Figma; motion and states follow the demo**, with the improvements listed here. Exception (user, 2026-11-24): the home screen (hero, services, button, background "01") copies the demo's layout and type; see "Home screen follows the demo" in `layout-plan.md`. Same for the About screen (demo section 03) and the sidebar layout (user, 2026-11-24; "Section 04 notes"). From now on the user prefers the demo as the main reference.
 
 ## 1. Sidebar menu (desktop, ≥ 992px)
 

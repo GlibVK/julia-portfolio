@@ -26,9 +26,9 @@ Four 1920x1024 screens of one scrolling page. All screens share a fixed left sid
 | 01 | Sidebar (shared) (done) | sidebar elements in `1:130` | `images/figma/01-sidebar/` | Logo, nav with active underline and arrow, contact email, social icons, top-right menu icon, anchor links to sections |
 | 02 | Home hero (done) | `1:178`, `1:139`, `1:177`, `1:131` | `images/figma/02-home-hero/` | Portrait on the yellow rounded-diamond shape, "Designer / Developer" label, large name, background "01" |
 | 03 | Home services + button (done) | `1:162`, `1:166`, `1:170`, `1:140` | none | Three numbered services in a row and the black "View all works" button (reused in section 04) |
-| 04 | About: intro and skills | `1:63` | none | Services list (reuse the component from 03), "Introduction" heading and text, four skill bars with percentages |
+| 04 | Experience: intro and skills (done) | `1:63` | none | Rebuilt as the demo's section 03: intro, personal info table, five skill bars, background "03"; sidebar also matched to the demo (see Section 04 notes) |
 | 05 | Works: portfolio | `1:183` | `images/figma/05-works/` | Heading and intro text, horizontal row of cards with colored backgrounds, illustrations, SVG/PSD tags. Card illustrations (`1:225`, `1:251`, `1:281`) are exported as SVG without background. The 4th card is a cut-off duplicate of card 3 |
-| 06 | Biodata | `1:2` | none | Education, Experiences, Interests, References as a 2x2 grid of timeline entries |
+| 06 | About / Biodata (done) | `1:2` | none | The demo's "BIODATA" section placed above Experience as `about`: Education, Experiences, Interests, References in a 2x2 grid (see Section 06 notes) |
 | 07 | Responsive | all | none | Tablet and mobile layouts: sidebar becomes a burger menu, columns stack, large type scales down |
 | 08 | Final QA | all | none | Compare with Figma at 1920 / 1440 / 768 / 375 px, accessibility, performance, link check |
 
@@ -58,7 +58,7 @@ julia-free/
     vite.config.ts              alias '@figma' -> ../images/figma
     src/
       main.tsx                  entry; ?grid in the URL outlines sidebar and sections
-      App.tsx                   page skeleton: sections home, about, works, biodata
+      App.tsx                   page skeleton: sections home, about, experience, works
       styles/tokens.css         colors, type scale, spacing, grid constants (from Figma)
       styles/base.css           reset and global element styles
       components/
@@ -77,7 +77,7 @@ Commands (PowerShell, in `julia-free\site`): `npm run dev` (http://localhost:517
 - Coordinates: content column starts at Figma x = 400. Inside a section, CSS left = Figma x - 400; top = Figma y relative to the frame.
 - Figma line height "Auto" (stored as `100 PERCENT`) is `var(--line-height-auto)` = 1.172 for Roboto. Figma letter spacing in % maps to em (-10% = -0.1em).
 - Figma applies letter spacing between characters only; CSS also adds it after the last one. Anchor text with negative letter spacing by its left edge.
-- Section ids: `home` (1:130), `about` (1:63), `works` (1:183), `biodata` (1:2). Experience / Education / References anchors go inside `biodata` (section 06).
+- Section ids (demo order, since 2026-11-24): `home` (1:130), `about` (biodata, 1:2), `experience` (1:63), `works` (1:183). See Section 06 notes.
 - The layout is desktop-only for now: at narrow widths the 400px sidebar overlaps content. Section 07 fixes this.
 - **Responsive rules (user, 2026-11-24, revised the same day to follow the demo), apply to every section below 992px:** copy the live demo's stacked layout (measure it at 375, 393 and 768px): one column with 48px side padding, images as wide as the column (capped at their demo size, centred), text and buttons aligned to the left edge, demo font formulas (e.g. name `calc(3rem + 8.5vw)`, h3 `calc(1.3rem + 0.6vw)`); nothing cut off or running off screen; the same appear animations as on desktop; the 1920px layout must not change. From 992 to 1920px the desktop composition shrinks proportionally (`--fig-px`, see Section 02 notes); check at 992 and ~1300px too. Reference: the hero in section 02.
 
@@ -100,7 +100,7 @@ node tools/fig-inspect/tree.cjs $env:TEMP\julia-fig\nodes.json 1:130 2
 - Components: `Sidebar/SidebarContent` (logo, nav, email, social icons, credit), `Nav`, `SocialLinks`, `Menu` (top-right button + drawer). Content lives in `src/data/site.ts`; the email and social URLs are placeholders to replace before launch.
 - The same `SidebarContent` renders in the fixed sidebar and in the drawer. The drawer is a native `<dialog>` opened with `showModal()` (focus trap, Esc, inert page), slides in from the right (the button is top-right), closes on link click, Esc and backdrop click, and locks page scroll.
 - Active nav item: `useActiveSection` (IntersectionObserver, middle band of the viewport) + `useActiveNavItem` (Experience / Education share the biodata screen; the last clicked one wins, otherwise Experience). It sets `aria-current`.
-- Section 06 must move the ids `experience`, `education` from the temporary spans in `App.tsx` onto the real blocks.
+- (Done in section 06: one nav item per section; the temporary spans are gone.)
 - User feedback (2026-11-24): every nav item has a static grey 1px divider (`--color-divider`); on hover a 1px black line (`--color-ink`, as in Figma) fills it from the left while the grey part shrinks (clip-path, no overlap), and stays on the active item. The divider is 0.5px; both have rounded ends. "References" was replaced by a collapsible "Projects" item (grey chevron rotates down and turns black, submenu with placeholder links in `projectsGroup` in `site.ts`). Grey static lines sit above and below the social icons. Nav order stays as in Figma: Home, About, Works, Experience, Education, Projects.
 - Below 992px the fixed sidebar is hidden and the menu button (top 12px, right 12px) opens the drawer. From 992px the button and drawer are hidden and an open drawer closes itself (`DESKTOP_QUERY` in `Menu.tsx`; keep 992px in sync with `Menu.css` and `PageLayout.css`). The burger bars are 7.2px apart (`--menu-bar-step` in `Menu.css`, whole screen pixels at 125% scaling); the middle bar is 10px wide, right-aligned, and grows to 16px on hover by animating its `width` (changed 2026-11-24: `clip-path` is painted without pixel snapping and left a half-grey row and grey right edge at 125% scaling; scaleX blurs). Bars have square ends (a 1px radius made the corner pixels grey). Colour `--color-text` #111, as the Figma icon. The rest of the responsive layout is section 07.
 - The active-item arrow from Figma (`1:160`) was removed at the user's request; the active item is marked only by the yellow line.
@@ -149,7 +149,7 @@ Measured on the demo at 393x852, 375x667 and 768x1024 and copied; our page now m
 - Services stacked 16px apart, starting `8px + 0.078em-of-the-name` under the name; titles `calc(1.3rem + 0.6vw)`. Button 217x74, 16px under the last service.
 - Background "01": 600px, line-height 0.7, right edge = column right edge, bottom 100px above the section bottom (demo `.bg-text::after`); on phones the left of the "0" runs off screen, as in the demo.
 - Sections keep `min-height: 100svh` (user rule), so on short phones the home screen still fills the screen.
-- Not copied: the demo's menu button (26px at top/right 40px); ours stays as built in section 01.
+- Not copied: the demo's menu button (26px at top/right 40px); ours stays as built in section 01 (confirmed by the user 2026-11-24 after comparing at 768px).
 
 ## Section 03 notes (done, built together with 02)
 
@@ -163,6 +163,40 @@ Measured on the demo at 393x852, 375x667 and 768x1024 and copied; our page now m
 - Checked: 1920x1024 services match Figma; 2000x978 (user's screen) — services and button play on load in one row, staggered; 393x852 — the first service (top 740 > 852 - 120) plays after ~100px of scroll, then the others at 200 / 300 / 500px.
 - Smooth mouse-wheel scrolling (user request 2026-11-24): `hooks/useSmoothWheel`, called once in `App`. No library. Takes over mouse-wheel notches only (legacy `wheelDeltaY` multiple of 120 in Chromium/Safari, `deltaMode` lines in Firefox) and glides the page to a target with time-based easing (`GLIDE_MS` 110). Native scrolling stays for touchpads/touch, `prefers-reduced-motion: reduce`, Ctrl+wheel zoom, horizontal wheels, inner scrollable areas and open dialogs; a key press or pointer down stops a glide. `scroll-behavior: smooth` in `base.css` still handles anchor links. Checked with synthetic events; the feel with a real mouse needs a manual check.
 - Testing tip: the browser restores the scroll position on reload; set `history.scrollRestoration = 'manual'` and scroll to the top before testing load-time reveals.
+
+## Section 04 notes (done, rebuilt to follow the demo)
+
+**User decision 2026-11-24:** this screen and the sidebar follow the live demo (its section "03", "Experienced Creative mind"), not Figma 1:63. The first Figma-based version (services list, button, Source Sans 3 skill labels) was replaced; the font file was removed again.
+
+- Component `ExperienceIntro` (was `AboutIntro`; since section 06 inside `Section id="experience"`). Data in `site.ts`: `experienceIntro`, `personalInfo` (`{ label, value, href? }`, placeholders from the demo) and `skills` (`{ name, value }`: one number sets the label and the bar width; the demo draws Illustrator at 90% while its label says 75%).
+- Measured on the demo at 2000x978 (`--fig-px` = 1 there; values are page px, CSS left = x - 400) and multiplied by `--fig-px` below that: section padding 48; intro column x 858.5, 592 wide (label 14.4px muted uppercase, heading `SplitText` h2 Roboto Bold 80px #212529, text 14.4px #333); row at y 401 with the info table at x 550.5 and the skills at x 1166.5, both 592 wide, 24px apart, first rows at y 425.
+- Heading lines are 116px apart (1.45em) with 96px (1.2em) word boxes at the top of each line, as the demo's inline-block words produce.
+- Table: `<dl>` with grid rows, label 33% bold, 8px cell padding, 0.8px `--color-divider` line under every row (41.3px rows). Skills: 500 weight, row 24.5 + 8px bar, 40px apart, percentage at the right end; bar track `#e9ecef`, fill `#ff534a`, radius 15, fill width = value of (track - 8px), starting 1px left of the track.
+- The blocks are in one flow (not absolute), so minimum font sizes on small desktops push blocks down instead of overlapping.
+- Background number "03" at (1325, 198): the demo's box right edge (120.8px past its section) and glyph baseline (754px under the section top). Numbers now follow the demo order: home 01, about 03, works 04, biodata 02. Done in section 06: biodata is now `about` (02), above `experience` (03).
+- Motion: intro, table and skills fade up (demo AOS timing, replay), heading letters slide up, bars grow from the left (`scaleX`, 1s `--ease-out`, 100ms apart; the demo bars are static) and empty again when the block resets. Full bars without JS or with reduced motion.
+- Below 992px (demo measured at 393x852): one column, 48px padding; heading `calc(1.625rem + 4.5vw)`; table 88px under the text, skills 64px under the table.
+- Verified at 2000x978 against the demo: label, heading lines, text, table rows, skill rows, bars, fills and the "03" box all within 0.5px. No overlaps or horizontal scroll at 1300, 992 and 375px; `npm run build` passes.
+
+### Sidebar follows the demo (same day)
+
+- Measured at 2000x978: 48px left inset (`--sidebar-inset-x`, also the drawer from 576px), logo ink at (48, 48) — our text logo (Roboto Black 64px) is the same size as the demo's 140x49 image, `margin-top: -11.4px` puts the top of "l" on the 48px padding; nav list from y 145, rows 44px (18px on a 43.2px line), 235px wide (`--sidebar-content-width`).
+- Bottom group ends at the screen's bottom edge: email 14.4px (16px margin + 16px padding), grey line, icons 16px lower, grey line 16px under the icons, credit 14.4px with 24px above and 40px below. Within 1.5px of the demo (our lines stay 0.5px with rounded ends, per earlier user feedback).
+- Nav order: Home, About, Experience, Works, Education, Projects (demo puts Experience before Works; Contact and Get PRO are not built). `sectionIds` is now an explicit list in scroll order.
+- Social icons: the demo's five outline icons (Facebook, Twitter, YouTube, Pinterest, Instagram), 24px, 16px apart, `#212529`, inline SVG in `SocialLinks/SocialIcon.tsx` (paths copied from the template's sprite) so colour and hover come from CSS. The Figma icon files in `images/figma/01-sidebar/social/` are no longer used.
+- Kept from earlier user decisions: hover/active black line, collapsible Projects, burger and drawer, 400px sidebar column (the demo's narrower column is invisible; changing it would move the home screen). Credit text stays "Design by TemplatesJungle".
+
+## Section 06 notes (done: About = the demo's "BIODATA")
+
+**User decision 2026-11-24:** page order and nav follow the demo — Home 01, About 02 (biodata), Experience 03 ("Experienced Creative mind"), Works 04. Section ids: `home`, `about`, `experience`, `works`; one nav item per section (Home, About, Experience, Works, then the Projects group). "Education" was removed from the nav (the demo has no such item); the temporary `#experience` / `#education` spans are gone. `sectionIds` is derived from `navItems`.
+
+- Component `Biodata` (inside `Section id="about"`), data `biodata` in `site.ts` (eyebrow + four groups of two `{ date, title, text }` entries, placeholders from the demo).
+- Measured on the demo at 2000x978 (page px, x `--fig-px` below 2000): section padding 48; two 592px columns at x 550.5 / 1166.5; row 1 at y 48 (the "BIODATA" label only in the first column, so "Experiences" starts at y 48 and "Education" at 72.5), row 2 at y 488.8; group padding-bottom 48. Heading 56px Bold #212529, box 81.6px (1.457em, word boxes 1.2em at the top), 8px margin. Entry: date 14.4px, title 28px Bold (line 1.2, 8px margin), text 14.4px (16px margin); the first entry of each group has 16px padding above and below. All positions on our page within 0.1px of the demo.
+- Background "02" at (1325, 291.5): the demo's right edge and glyph baseline (848px under the section top).
+- Motion as the demo: each row fades up; inside, the entries fade up 0 / 100 / 200 / 300ms apart (left column first); headings slide up letter by letter. Replays like the other reveals.
+- Below 992px (demo at 393x852): one column, 48px padding, groups 48px apart; heading `calc(1.475rem + 2.7vw)`, titles `calc(1.3rem + 0.6vw)`.
+- The "Experienced Creative mind" component was renamed `AboutIntro` → `ExperienceIntro` (classes `intro__*`, data `experienceIntro`); it now lives in `Section id="experience"`.
+- Checked: active nav item = the section in view (Home, About, Experience, Works); no overlaps or horizontal scroll at 2000, 1300, 992 and 375px; no console errors; `npm run build` passes.
 
 ## Speed and SEO pass (2026-11-24, user-approved steps 1–5)
 

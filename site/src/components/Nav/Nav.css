@@ -1,8 +1,7 @@
-/* Sidebar nav (Figma 1:138; the Figma arrow 1:160 was removed at the user's request). Lines and hover colour per user feedback (2026-11-24). */
+/* Sidebar nav: rows, spacing and lines as in the live demo (user request 2026-11-24); hover line and Projects group per earlier user feedback. */
 .nav {
-  /* Figma: logo bottom at y 122, nav text top at y 222, nav x 67 vs logo x 63 */
-  margin-top: 100px;
-  margin-inline-start: 4px;
+  /* demo: nav list top at y 145 = logo line box bottom (48 - 11.4 + 75) + 33.4 */
+  margin-top: 33.4px;
 }
 
 .nav__link {
@@ -10,10 +9,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 240px;
-  padding-inline: 1px 9px;
+  /* demo rows: 44px (18px text on a 43.2px line + the line under it), 235px wide */
+  width: var(--sidebar-content-width);
+  height: 44px;
+  padding-bottom: 0.8px;
   font-size: var(--font-size-nav);
-  line-height: var(--line-height-nav);
+  line-height: 43.2px;
   color: var(--color-text);
   text-align: start;
 }
@@ -103,7 +104,6 @@
 
 .nav__group-link {
   display: block;
-  padding-inline-start: 1px;
   font-size: var(--font-size-body);
   line-height: 2.6;
   color: var(--color-body);

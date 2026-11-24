@@ -1,7 +1,9 @@
 /*
- * Sidebar layout (Figma frame 1:130). The parent sets padding-top 47px and padding-left 63px.
- * At a 1024px-high viewport the bottom group lands on the Figma positions:
- * email top y 837, divider y 885, social icons top y 926.
+ * Sidebar layout = the live demo (user request 2026-11-24), measured at 2000x978:
+ * 48px left padding (set by the parent), logo ink at (48, 48), nav from y 145 with 44px rows,
+ * and a bottom group that ends at the bottom edge of the screen:
+ * email (16px margin + 16px padding, grey line under it), icons 16px lower, grey line 16px
+ * under the icons, credit 24px under the line and 40px above the bottom edge.
  */
 .sidebar-content {
   display: flex;
@@ -9,11 +11,16 @@
   justify-content: space-between;
   gap: var(--space-6);
   min-height: 100%;
-  padding-bottom: 32.6px;
 }
 
+/*
+ * Text logo, the same size as the demo's 140x49 logo image (Roboto Black 64px).
+ * The negative margin puts the top of "l" (0.178em under the line box top) at the
+ * parent's 48px padding.
+ */
 .sidebar-content__logo {
   display: inline-block;
+  margin-top: -11.4px;
   font-size: var(--font-size-logo);
   font-weight: var(--font-weight-black);
   line-height: var(--line-height-auto);
@@ -28,48 +35,42 @@
 }
 
 .sidebar-content__email {
-  margin-inline-start: 10px; /* Figma x 73 */
-  font-size: var(--font-size-nav);
-  line-height: var(--line-height-contact);
-  color: var(--color-ink);
+  margin-top: var(--space-3);
+  padding-block: var(--space-3);
+  font-size: var(--font-size-eyebrow-demo);
+  line-height: var(--line-height-body);
+  color: var(--color-text);
   transition: opacity var(--duration-fast) ease;
 }
 
 @media (hover: hover) {
-  .sidebar-content__email:hover {
+  .sidebar-content__email:hover,
+  .sidebar-content__credit a:hover {
     opacity: 0.6;
   }
 }
 
-/* Grey static lines above and below the icons; same x and width as the nav lines. */
+/* Grey static lines under the email and under the icons (user style: 0.5px, rounded ends). */
 .sidebar-content__divider {
-  width: 240px;
-  margin-top: 4.8px; /* Figma: email box bottom y 880.2, line y 885 */
-  margin-inline-start: 4px;
+  width: var(--sidebar-content-width);
   height: var(--line-thin);
   border-radius: var(--line-thin);
   background: var(--color-divider);
 }
 
 .sidebar-content__bottom .social-links {
-  margin-block: var(--space-4); /* 24px above and below the icons */
-  margin-inline-start: 4px; /* Figma x 67 */
+  margin-block: var(--space-3);
 }
 
-.sidebar-content__bottom .social-links + .sidebar-content__divider {
-  margin-top: 0;
-}
-
-/* License credit (not in Figma; required by the TemplatesJungle license). */
+/* License credit, as the demo's "HTML by TemplatesJungle" (ours: "Design by"). */
 .sidebar-content__credit {
-  margin-top: var(--space-3);
-  margin-inline-start: 4px;
-  font-size: var(--font-size-eyebrow);
+  padding-block: var(--space-4) 40px; /* demo: py-4 + the paragraph's 16px margin */
+  font-size: var(--font-size-eyebrow-demo);
   line-height: var(--line-height-body);
-  color: var(--color-body);
+  color: var(--color-text-body-demo);
 }
 
 .sidebar-content__credit a {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  color: var(--color-text);
+  transition: opacity var(--duration-fast) ease;
 }

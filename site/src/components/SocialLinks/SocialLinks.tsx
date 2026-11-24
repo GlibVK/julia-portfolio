@@ -1,4 +1,5 @@
 import type { SocialLink } from '../../data/site';
+import { SocialIcon } from './SocialIcon';
 import './SocialLinks.css';
 
 type SocialLinksProps = { links: readonly SocialLink[] };
@@ -15,7 +16,7 @@ export function SocialLinks({ links }: SocialLinksProps) {
             rel="noopener noreferrer"
             aria-label={`${link.name} (opens in a new tab)`}
           >
-            <img src={link.icon} alt="" width={26} height={26} />
+            <SocialIcon name={link.icon} />
           </a>
         </li>
       ))}
