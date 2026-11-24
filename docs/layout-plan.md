@@ -48,7 +48,7 @@ Decisions approved by the user:
 
 - **Stack:** Vite 8 + React 19 + TypeScript 6, plain CSS with custom properties (no CSS framework). The app lives in `site/`.
 - **Git:** repository at `julia-free/` root. `node_modules`, `site/dist` and the `.fig` file are ignored. Commit only after the user approves.
-- **Old TemplatesJungle files** (`index.html`, `style.css`, `css/`, `js/`, old images in `images/`) stay where they are as reference. They are not used by the new site.
+- **Old TemplatesJungle files** (`index.html`, `style.css`, `css/`, `js/`, `readme.txt`, old images): moved on 2026-11-24 to `template-reference/` (git-ignored, local only) before the repository went public, because the template licence forbids redistributing it as is. They are not used by the new site.
 - **License credit:** keep a small "Design by TemplatesJungle" link to https://templatesjungle.com/ (add it in section 01, bottom of the sidebar).
 
 ### Structure
@@ -242,6 +242,12 @@ The demo's `portfolio-masonry.html` (a PRO page of the template; its pictures ar
 - **Sidebar:** `SidebarContent` and `Menu` take `page`. On the portfolio page the section links become `/#about` etc., the logo `/`, the "Portfolio" label has `aria-current="page"` (black line) and the group starts open. The label is a link across the row; the chevron is a separate 40x43.2 button (`aria-label` "Portfolio projects") over its right end. Rows, line and chevron position unchanged (checked at 2000).
 - Checked against the demo (reveals off): 2000x978 header, filters row, grid and tiles within 0.1px (the filter row is centred with "All" added); 820x1180 tiles 158.4 / 414.4, 232 wide (demo 158.5 / 414.5); 768x1024 column 136, tiles 228.4 (demo 228.5; the demo's second tile is 3.6px further right, an Isotope rounding); 393x852 and 375x667 label 104, grid top 459.4 / 458.1 (demo 459.2 / 458.3). Not copied: on phones the demo's column is 15px narrower on the right (its main column offset); ours keeps the home page's 48px edges, so tiles are ~8px wider. 1300 and 992 scale like the home sections (3 columns at 992). Filters, status text, hash links, drawer, no horizontal scroll, no console errors. Production build (`npm run preview`): both pages hydrate without warnings, tiles load AVIF; shared JS 76.8 KB gzip.
 
+## GitHub and hosting (2026-11-24, user decision)
+
+- Public GitHub repository, site on **GitHub Pages** at `https://<owner>.github.io/<repository>/`, built by `.github/workflows/deploy-pages.yml` on every push to `master` (one-time setting: Settings → Pages → Source "GitHub Actions"). Work goes on feature branches and reaches `master` through pull requests.
+- Sub-path support: `vite.config.ts` `base` = `BASE_PATH` (default `/`); page links use `pages` in `site.ts`, built from `import.meta.env.BASE_URL`; Vite prefixes the HTML, CSS and asset URLs. The workflow sets `BASE_PATH=/<repository>/` and `SITE_URL`. Checked locally with `BASE_PATH=/julia-portfolio/` + `vite preview`: both pages, links, fonts and images load. In Git Bash set `MSYS_NO_PATHCONV=1`, otherwise it rewrites `/julia-portfolio/` into a Windows path.
+- The original template files were moved out of git before publishing (see Foundation).
+
 ## Speed and SEO pass (2026-11-24, user-approved steps 1–5)
 
 Nothing visible or animated was meant to change; checked after the pass (2000x978, 393x852): same positions to the pixel, reveals start hidden and play on load, replay on scroll back, letters, menu open/close, burger bars, smooth wheel; no console errors, no hydration warnings.
@@ -257,5 +263,5 @@ Nothing visible or animated was meant to change; checked after the pass (2000x97
 ## Asset notes
 
 - `images/figma/_unused/` holds a photo that is hidden in every frame of the mockup. It is not part of the visible design.
-- The other files in `images/` (banner, portfolio, thumbnails, logos) belong to the original TemplatesJungle HTML template, not to the mockup. Decided in section 00: keep them in place as reference; the new site does not use them.
+- The original TemplatesJungle HTML template's images (banner, portfolio, thumbnails, logos) are in `template-reference/images/` (local only, see Foundation). Thumbnails 4–12 are copied into `images/portfolio/source/` as placeholder project pictures for the portfolio page.
 - The HTML template license requires keeping the TemplatesJungle credit link unless the paid version is used. Decided in section 00: keep a small credit link (added in section 01).

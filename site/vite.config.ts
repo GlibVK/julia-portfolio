@@ -10,6 +10,9 @@ const figmaAssets = fileURLToPath(new URL('../images/figma', import.meta.url));
 const page = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 export default defineConfig({
+  // Where the site is served from: "/" by default; the GitHub Pages workflow sets
+  // BASE_PATH=/<repository>/ because a project site lives at https://<user>.github.io/<repository>/.
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react()],
   resolve: {
     alias: { '@figma': figmaAssets },

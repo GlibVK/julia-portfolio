@@ -10,3 +10,6 @@ site/dist/
 .DS_Store
 Thumbs.db
 site/dist-server
+
+# Original TemplatesJungle HTML template (reference only; its licence forbids redistributing it as is)
+template-reference/

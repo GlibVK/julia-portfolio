@@ -27,11 +27,15 @@ export const navItems: NavItem[] = [
 /** Page section ids in scroll order (as in App.tsx), used by the scrollspy. */
 export const sectionIds = navItems.map((item) => item.section);
 
-/** Site pages (one HTML file each, see vite.config.ts). */
+/**
+ * Site pages (one HTML file each, see vite.config.ts). BASE_URL is "/" locally and
+ * "/<repository>/" on GitHub Pages (BASE_PATH at build time).
+ */
+const base = import.meta.env.BASE_URL;
 export const pages = {
-  home: '/',
-  portfolio: '/portfolio/',
-} as const;
+  home: base,
+  portfolio: `${base}portfolio/`,
+};
 
 export type NavGroup = {
   label: string;

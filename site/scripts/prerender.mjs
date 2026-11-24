@@ -2,8 +2,9 @@
 // Puts each rendered page into its HTML file (dist/index.html, dist/portfolio/index.html), so
 // search engines and link previews get the real content without running JavaScript.
 //
-// Optional: set SITE_URL to the live address to also get canonical / og:url, an absolute
-// og:image, the Person "url" and sitemap.xml, e.g. in PowerShell:
+// Optional: set SITE_URL to the live address of the site's root (with the sub-path on GitHub
+// Pages) to also get canonical / og:url, an absolute og:image, the Person "url" and
+// sitemap.xml, e.g. in PowerShell:
 //   $env:SITE_URL = 'https://example.com'; npm run build
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -12,7 +13,7 @@ const here = (path) => fileURLToPath(new URL(path, import.meta.url));
 const dist = here('../dist/');
 const serverEntry = pathToFileURL(here('../dist-server/entry-server.js')).href;
 
-/** Pages of the site: render() name, HTML file in dist/, URL path. Keep in sync with vite.config.ts. */
+/** Pages of the site: render() name, HTML file in dist/, URL path from the site root. Keep in sync with vite.config.ts. */
 const pages = [
   { name: 'home', file: 'index.html', path: '/' },
   { name: 'portfolio', file: 'portfolio/index.html', path: '/portfolio/' },
@@ -20,6 +21,8 @@ const pages = [
 
 const { render } = await import(serverEntry);
 const siteUrl = process.env.SITE_URL?.replace(/\/+$/, '');
+// og:image is already a root-absolute path with the base ("/<repository>/og-image.jpg"): add the origin only.
+const siteOrigin = siteUrl ? new URL(siteUrl).origin : '';
 
 for (const page of pages) {
   let html = await readFile(`${dist}${page.file}`, 'utf8');
@@ -31,7 +34,7 @@ for (const page of pages) {
   if (siteUrl) {
     const url = `${siteUrl}${page.path}`;
     html = html
-      .replace('<meta property="og:image" content="/', `<meta property="og:image" content="${siteUrl}/`)
+      .replace('<meta property="og:image" content="/', `<meta property="og:image" content="${siteOrigin}/`)
       .replace(
         '<meta property="og:type"',
         `<link rel="canonical" href="${url}" />\n    <meta property="og:url" content="${url}" />\n    <meta property="og:type"`,
