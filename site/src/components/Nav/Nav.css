@@ -1,0 +1,125 @@
+/* Sidebar nav (Figma 1:138; the Figma arrow 1:160 was removed at the user's request). Lines and hover colour per user feedback (2026-11-24). */
+.nav {
+  /* Figma: logo bottom at y 122, nav text top at y 222, nav x 67 vs logo x 63 */
+  margin-top: 100px;
+  margin-inline-start: 4px;
+}
+
+.nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 240px;
+  padding-inline: 1px 9px;
+  font-size: var(--font-size-nav);
+  line-height: var(--line-height-nav);
+  color: var(--color-text);
+  text-align: start;
+}
+
+/*
+ * Underline = grey part + black part that meet at one moving point, never overlapping.
+ * Both lines keep their full size; clip-path only hides part of each one.
+ * (transform: scaleX was dropped: the GPU layer blurred the 1px line until the
+ * animation ended, so it looked thinner and then snapped to 1px.)
+ * Black is revealed from the left, grey is hidden from the left, with the same duration
+ * and easing, so the black right edge and the grey left edge are always at the same x.
+ */
+.nav__link::before,
+.nav__link::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  transition: clip-path var(--duration-underline) var(--ease-underline);
+}
+
+/* Grey: the part not yet filled. */
+.nav__link::before {
+  height: var(--line-thin);
+  border-radius: var(--line-thin);
+  background: var(--color-divider);
+  clip-path: inset(0 0 0 0);
+}
+
+/* Black: fills from the left on hover, stays on the active item. */
+.nav__link::after {
+  height: var(--line-accent);
+  border-radius: var(--line-accent);
+  background: var(--color-ink); /* black, as in Figma */
+  clip-path: inset(0 100% 0 0);
+}
+
+.nav__link[aria-current='true']::before,
+.nav__link:focus-visible::before {
+  clip-path: inset(0 0 0 100%);
+}
+
+.nav__link[aria-current='true']::after,
+.nav__link:focus-visible::after {
+  clip-path: inset(0 0 0 0);
+}
+
+@media (hover: hover) {
+  .nav__link:hover::before {
+    clip-path: inset(0 0 0 100%);
+  }
+
+  .nav__link:hover::after {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* ---------- Projects toggle ---------- */
+.nav__chevron {
+  flex: none;
+  margin-inline-end: 4px; /* centre under the 24px arrow column */
+  color: var(--color-icon-muted);
+  transition:
+    transform var(--duration-toggle) ease,
+    color var(--duration-toggle) ease;
+}
+
+.nav__toggle[aria-expanded='true'] .nav__chevron {
+  color: var(--color-ink);
+  transform: rotate(90deg);
+}
+
+.nav__group {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-toggle) ease;
+}
+
+.nav__group[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.nav__group-list {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.nav__group-link {
+  display: block;
+  padding-inline-start: 1px;
+  font-size: var(--font-size-body);
+  line-height: 2.6;
+  color: var(--color-body);
+  transition: color var(--duration-fast) ease;
+}
+
+.nav__group-list li:first-child .nav__group-link {
+  margin-top: var(--space-2);
+}
+
+.nav__group-list li:last-child .nav__group-link {
+  margin-bottom: var(--space-2);
+}
+
+@media (hover: hover) {
+  .nav__group-link:hover {
+    color: var(--color-text);
+  }
+}

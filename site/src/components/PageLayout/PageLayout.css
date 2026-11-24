@@ -1,0 +1,54 @@
+/* Page grid: fixed left sidebar + scrolling content column. */
+.page {
+  position: relative;
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 10;
+  width: var(--sidebar-width);
+  padding-top: var(--sidebar-inset-top);
+  padding-inline-start: var(--sidebar-inset-x);
+  overflow-y: auto;
+}
+
+.main {
+  margin-inline-start: var(--sidebar-width);
+}
+
+/* Below the desktop breakpoint the sidebar is reached through the menu drawer.
+   The rest of the responsive layout is section 07. */
+@media (max-width: 991.98px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main {
+    margin-inline-start: 0;
+  }
+}
+
+/* Debug overlay: open the page with ?grid to see the column boundaries. */
+.debug-grid .sidebar {
+  outline: 1px dashed #e5484d;
+  outline-offset: -1px;
+  background: rgb(229 72 77 / 0.04);
+}
+
+.debug-grid .section {
+  outline: 1px dashed #3e63dd;
+  outline-offset: -1px;
+}
+
+.debug-grid .section::before {
+  content: attr(id);
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 2;
+  font-size: var(--font-size-eyebrow);
+  color: #3e63dd;
+}

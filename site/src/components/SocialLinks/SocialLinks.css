@@ -1,0 +1,27 @@
+/* Social icons row (Figma 1:144): 26px icons at x 0, 35, 80, 126, 171, 217. */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 19.4px;
+  height: 29px;
+}
+
+/* The Facebook glyph is narrow, so Figma places the next icon closer. */
+.social-links li:first-child {
+  margin-inline-end: -10.4px;
+}
+
+.social-links__link {
+  display: block;
+  transition: opacity var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .social-links__link:hover {
+    opacity: 0.6;
+  }
+}
+
+.social-links__link:focus-visible {
+  opacity: 0.6;
+}

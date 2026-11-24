@@ -1,0 +1,75 @@
+/*
+ * Sidebar layout (Figma frame 1:130). The parent sets padding-top 47px and padding-left 63px.
+ * At a 1024px-high viewport the bottom group lands on the Figma positions:
+ * email top y 837, divider y 885, social icons top y 926.
+ */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+  min-height: 100%;
+  padding-bottom: 32.6px;
+}
+
+.sidebar-content__logo {
+  display: inline-block;
+  font-size: var(--font-size-logo);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-auto);
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-text);
+}
+
+.sidebar-content__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar-content__email {
+  margin-inline-start: 10px; /* Figma x 73 */
+  font-size: var(--font-size-nav);
+  line-height: var(--line-height-contact);
+  color: var(--color-ink);
+  transition: opacity var(--duration-fast) ease;
+}
+
+@media (hover: hover) {
+  .sidebar-content__email:hover {
+    opacity: 0.6;
+  }
+}
+
+/* Grey static lines above and below the icons; same x and width as the nav lines. */
+.sidebar-content__divider {
+  width: 240px;
+  margin-top: 4.8px; /* Figma: email box bottom y 880.2, line y 885 */
+  margin-inline-start: 4px;
+  height: var(--line-thin);
+  border-radius: var(--line-thin);
+  background: var(--color-divider);
+}
+
+.sidebar-content__bottom .social-links {
+  margin-block: var(--space-4); /* 24px above and below the icons */
+  margin-inline-start: 4px; /* Figma x 67 */
+}
+
+.sidebar-content__bottom .social-links + .sidebar-content__divider {
+  margin-top: 0;
+}
+
+/* License credit (not in Figma; required by the TemplatesJungle license). */
+.sidebar-content__credit {
+  margin-top: var(--space-3);
+  margin-inline-start: 4px;
+  font-size: var(--font-size-eyebrow);
+  line-height: var(--line-height-body);
+  color: var(--color-body);
+}
+
+.sidebar-content__credit a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

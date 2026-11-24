@@ -1,0 +1,11 @@
+/* One screen of the page (one Figma frame). */
+.section {
+  position: relative;
+  min-height: var(--section-min-height);
+  overflow: clip; /* the background number overflows the frame, as in Figma */
+}
+
+.section__content {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,91 @@
+/*
+ * Design tokens taken from the Figma mockup (frames 1:130, 1:63, 1:183, 1:2).
+ * Values are for the 1920x1024 desktop design. Section 07 (Responsive) scales them down.
+ * Sizes use rem (1rem = 16px) so the page respects the user's browser font size;
+ * the original px value from Figma is noted next to each one.
+ */
+:root {
+  /* ---------- Colors ---------- */
+  --color-bg: #ffffff;
+  --color-text: #111111;        /* nav, logo, primary text */
+  --color-heading: #333333;     /* large headings: "Julia Stiles", "Portfolio" */
+  --color-ink: #000000;         /* small labels, service titles, lines, icons */
+  --color-body: #666666;        /* body copy under service titles */
+  --color-muted: #777777;       /* lead paragraphs */
+  --color-bg-number: #f1f1f1;   /* large background numbers "01", "02", "03" */
+  --color-accent: #ffcc1e;      /* yellow shape behind the portrait */
+  --color-button-bg: #111111;
+  --color-button-text: #ffffff;
+  --color-line: #000000;        /* 1px black lines from Figma */
+  --color-divider: #dee2e6;     /* grey sidebar dividers (user feedback, demo value) */
+  --color-icon-muted: #8a8a8a;  /* collapsed "Projects" chevron */
+
+  /* ---------- Typography ---------- */
+  --font-sans: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  --font-size-bg-number: 37.5rem;  /* 600px */
+  --font-size-display: 14.25rem;   /* 228px, "Julia Stiles" */
+  --font-size-h1: 4.5rem;          /* 72px, "Portfolio", "Experienced Creative mind" */
+  --font-size-logo: 4rem;          /* 64px, "Julia." */
+  --font-size-h3: 1.375rem;        /* 22px, service titles */
+  --font-size-lead: 1.3125rem;     /* 21px, intro paragraphs */
+  --font-size-label: 1.25rem;      /* 20px, "Designer / developer" */
+  --font-size-nav: 1.125rem;       /* 18px, sidebar nav and email */
+  --font-size-body: 1rem;          /* 16px, body copy and button */
+  --font-size-eyebrow: 0.75rem;    /* 12px, "introduction", "01" above services */
+
+  /* Figma "Auto" line height = Roboto's natural line height (ascent + descent) */
+  --line-height-auto: 1.172;
+  --line-height-display: 0.8;      /* "Julia Stiles" */
+  --line-height-body: 1.7;         /* body, service titles, eyebrows */
+  --line-height-lead: 1.8;         /* lead paragraphs, button */
+  --line-height-contact: 2.4;      /* sidebar email */
+  --line-height-nav: 2.8;          /* sidebar nav list */
+
+  --letter-spacing-bg-number: -0.1em;  /* -10% */
+  --letter-spacing-tight: -0.05em;     /* -5%, logo and display name */
+  --letter-spacing-wide: 0.1em;        /* 10%, eyebrows and the role label */
+
+  /* ---------- Spacing scale ---------- */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 1rem;     /* 16px */
+  --space-4: 1.5rem;   /* 24px */
+  --space-5: 2rem;     /* 32px */
+  --space-6: 3rem;     /* 48px */
+  --space-7: 4rem;     /* 64px */
+  --space-8: 6rem;     /* 96px */
+
+  /* ---------- Page grid ---------- */
+  --design-width: 1920px;       /* Figma frame width */
+  --sidebar-width: 400px;       /* fixed left column; content in the mockup starts at x >= 412 */
+  --sidebar-inset-x: 63px;      /* left edge of the logo and nav */
+  --sidebar-inset-top: 47px;    /* top edge of the "Julia." logo */
+  --section-min-height: 1024px; /* height of one Figma frame */
+
+  --border-hairline: 1px solid var(--color-line);
+  --line-thin: 0.5px;   /* sidebar grey dividers, rounded ends */
+  --line-accent: 1px;   /* black nav hover/active line, rounded ends */
+
+  /* ---------- Motion (see docs/interaction-spec.md) ---------- */
+  --duration-fast: 150ms;           /* hover opacity, button colour */
+  --duration-base: 300ms;           /* nav arrow fade */
+  --duration-icon: 250ms;           /* burger <-> X morph (demo value) */
+  --duration-underline: 600ms;      /* nav underline (demo value) */
+  --duration-toggle: 350ms;         /* Projects chevron and submenu (demo value) */
+  --duration-drawer-open: 300ms;
+  --duration-drawer-close: 200ms;
+  --duration-reveal: 800ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-underline: ease-out;               /* demo value */
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-text: cubic-bezier(0.5, 0, 0.53, 1); /* heading letters (demo value) */
+
+  --color-backdrop: rgb(0 0 0 / 0.3);
+}
